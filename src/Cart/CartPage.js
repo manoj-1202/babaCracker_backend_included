@@ -5,7 +5,6 @@ import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-
 export default function CartPage() {
   const { cartItems, removeFromCart, updateCartItem, totalItems } = useCart();
   const [lastRemoved, setLastRemoved] = useState(null);
@@ -14,7 +13,6 @@ export default function CartPage() {
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,7 +63,7 @@ export default function CartPage() {
         cartItems,
         totalAmount,
       });
-  
+
       navigate("/thank-you");
     } catch (error) {
       setOrderStatus({ success: false, message: "Failed to place order." });
@@ -74,7 +72,6 @@ export default function CartPage() {
       setIsPlacingOrder(false);
     }
   };
-  
 
   const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile;
 
@@ -128,12 +125,12 @@ export default function CartPage() {
                   <div>{index + 1}</div>
                   <div className="font-semibold text-gray-800">{item.name}</div>
                   <div className="text-gray-700">₹{item.rate}</div>
-                  <div className="flex items-center gap-2 border rounded px-2 py-1">
+                  <div className="flex flex-col sm:flex-row items-center gap-2 border rounded px-2 py-1">
                     <button
                       className="text-lg font-bold text-gray-700 px-2"
-                      onClick={() => handleDecrement(item)}
+                      onClick={() => handleIncrement(item)}
                     >
-                      −
+                      +
                     </button>
                     <input
                       type="number"
@@ -146,11 +143,12 @@ export default function CartPage() {
                     />
                     <button
                       className="text-lg font-bold text-gray-700 px-2"
-                      onClick={() => handleIncrement(item)}
+                      onClick={() => handleDecrement(item)}
                     >
-                      +
+                      −
                     </button>
                   </div>
+
                   <div className="text-gray-700">₹{item.rate * item.qty}</div>
                   <div>
                     <button
@@ -171,9 +169,7 @@ export default function CartPage() {
                 </div>
                 <div className="text-xl sm:text-2xl font-bold">
                   Total Amount: ₹
-                  <span className="text-blue-600 font-bold">
-                    {totalAmount}
-                  </span>
+                  <span className="text-blue-600 font-bold">{totalAmount}</span>
                 </div>
                 <div className="flex flex-col gap-2 w-full lg:w-auto">
                   <input

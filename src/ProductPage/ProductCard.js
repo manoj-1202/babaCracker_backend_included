@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { productData } from "./ProductData";
@@ -13,18 +12,18 @@ export default function ProductFeaturePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [lastAddedId, setLastAddedId] = useState(null);
+  const [lastRemovedId, setLastRemovedId] = useState(null);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
-  const { cartItems, addToCart } = useCart();
+  const { cartItems, addToCart, removeFromCart } = useCart();
 
   const productGridRef = useRef(null);
-
 
   const categoryCounts = useMemo(() => {
     const counts = productData.reduce((acc, product) => {
       acc[product.category] = (acc[product.category] || 0) + 1;
       return acc;
-    }, { All: productData.length }); 
+    }, { All: productData.length });
     return counts;
   }, []);
 
@@ -59,6 +58,12 @@ export default function ProductFeaturePage() {
     setTimeout(() => setLastAddedId(null), 2000);
   };
 
+  const handleRemoveFromCart = (productId) => {
+    removeFromCart(productId);
+    setLastRemovedId(productId);
+    setTimeout(() => setLastRemovedId(null), 2000);
+  };
+
   const isInCart = (id) => cartItems.some((item) => item.id === id);
 
   const handleCategoryChange = (cat) => {
@@ -72,16 +77,25 @@ export default function ProductFeaturePage() {
   return (
     <div className="p-4 sm:p-10 max-w-7xl mx-auto min-h-screen bg-gray-50">
       <div className="pb-6">
-        <h2 className="text-3xl font-bold text-center text-gray-800">Our Products Catalog</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800">
+          Our Products Catalog
+        </h2>
 
         {/* Cart Icon */}
         <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
           <Link to="/cart" aria-label="View Cart">
-            <img
-              src={cart}
-              alt="Cart"
-              className="w-10 h-10 sm:w-12 sm:h-12 object-contain hover:opacity-80 transition-opacity"
-            />
+            <div className="relative">
+              <img
+                src={cart}
+                alt="Cart"
+                className="w-10 h-10 sm:w-12 sm:h-12 object-contain hover:opacity-80 transition-opacity"
+              />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {cartItems.length}
+                </span>
+              )}
+            </div>
           </Link>
         </div>
       </div>
@@ -117,13 +131,18 @@ export default function ProductFeaturePage() {
 
           {/* Mobile Category Dropdown */}
           {isCategoryMenuOpen && (
-            <ul id="category-menu" className="sm:hidden p-4 rounded-lg shadow-md mt-2 bg-white">
+            <ul
+              id="category-menu"
+              className="sm:hidden p-4 rounded-lg shadow-md mt-2 bg-white"
+            >
               {categories.map((cat) => (
                 <li key={cat} className="mb-4">
                   <button
                     onClick={() => handleCategoryChange(cat)}
                     className={`w-full text-left p-3 rounded-lg text-gray-800 font-semibold hover:bg-blue-500 hover:text-white transition-colors ${
-                      selectedCategory === cat ? "bg-blue-500 text-white" : "bg-gray-100"
+                      selectedCategory === cat
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-100"
                     }`}
                   >
                     {cat} ({categoryCounts[cat] || 0})
@@ -177,13 +196,18 @@ export default function ProductFeaturePage() {
           </div>
 
           {/* Product Grid */}
-          <div
-            ref={productGridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
-          >
+          <div className="w-full overflow-x-auto" ref={productGridRef}>
+            {/* Header Row */}
+            <div className="grid grid-cols-[60px_2fr_1fr_1fr] gap-4 font-semibold text-gray-700 bg-gray-100 p-4 rounded-t-md">
+              <div>S.No</div>
+              <div>Name of the Product</div>
+              <div>Rate (₹)</div>
+              <div>Quantity</div>
+            </div>
+
             <AnimatePresence>
               {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => {
+                filteredProducts.map((product, index) => {
                   const added = isInCart(product.id);
                   return (
                     <motion.div
@@ -191,43 +215,54 @@ export default function ProductFeaturePage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.6 }}
-                      className="border p-4 rounded-lg shadow hover:shadow-lg bg-white relative"
+                      transition={{ duration: 0.4 }}
+                      className="grid grid-cols-[60px_2fr_1fr_1fr] gap-4 items-center border-b p-4 relative"
                     >
-                    
-                      <h2 className="text-xl font-semibold mb-2 text-gray-800">
-                        {product.name}
-                      </h2>
-                      <p className="text-gray-600">
-                        Category: {product.category}
-                      </p>
-                      <p className="text-gray-800 font-bold">
-                        ₹{product.rate} / {product.per}
-                      </p>
-                      <button
-                        className={`mt-4 px-4 py-2 rounded transition-colors ${
-                          added
-                            ? "bg-green-500 text-white cursor-not-allowed"
-                            : "bg-blue-500 text-white hover:bg-blue-600"
-                        }`}
-                        onClick={() => handleAddToCart(product)}
-                        disabled={added}
-                        aria-label={added ? `${product.name} added to cart` : `Add ${product.name} to cart`}
-                      >
-                        {added ? "Added to Cart" : "Add to Cart"}
-                      </button>
+                      <div>{index + 1}</div>
+                      <div className="font-semibold">{product.name}</div>
+                      <div className="text-gray-700">₹{product.rate}</div>
+                      <div className="text-gray-700">{product.per}</div>
 
-                      {lastAddedId === product.id && (
-                        <div className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">
-                          {product.name} added!
-                        </div>
-                      )}
+                      <div className="col-span-4 mt-2 flex justify-center relative">
+                        <button
+                          className={`px-4 py-2 rounded transition-colors ${
+                            added
+                              ? "bg-red-500 text-white hover:bg-red-600"
+                              : "bg-blue-500 text-white hover:bg-blue-600"
+                          }`}
+                          onClick={() =>
+                            added
+                              ? handleRemoveFromCart(product.id)
+                              : handleAddToCart(product)
+                          }
+                          disabled={false}
+                          aria-label={
+                            added
+                              ? `Remove ${product.name} from cart`
+                              : `Add ${product.name} to cart  cart`
+                          }
+                        >
+                          {added ? "Remove from Cart" : "Add to Cart"}
+                        </button>
+
+                        {lastAddedId === product.id && (
+                          <div className="absolute top-[-2rem] bg-green-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">
+                            {product.name} added!
+                          </div>
+                        )}
+
+                        {lastRemovedId === product.id && (
+                          <div className="absolute top-[-2rem] bg-red-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">
+                            {product.name} removed!
+                          </div>
+                        )}
+                      </div>
                     </motion.div>
                   );
                 })
               ) : (
                 <motion.p
-                  className="text-center text-gray-600 text-lg col-span-full mt-10"
+                  className="text-center text-gray-600 text-lg mt-10 col-span-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

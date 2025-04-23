@@ -4,10 +4,12 @@ import { Menu, X } from "lucide-react";
 import Logo from "../assets/logo.png";
 import cart from "../assets/cart.png";
 import { Phone, MessageSquareText } from "lucide-react";
+import { useCart } from "../Cart/CartContext";
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { cartItems } = useCart();
 
   const navLinks = [
     { label: "Home", path: "/", description: "Explore our homepage" },
@@ -76,12 +78,19 @@ function Navbar() {
               </div>
 
               <div>
-                <Link to="/cart">
-                  <img
-                    src={cart}
-                    alt="Cart"
-                    className="w-10 h-10  object-contain"
-                  />
+                <Link to="/cart" aria-label="View Cart">
+                  <div className="relative">
+                    <img
+                      src={cart}
+                      alt="Cart"
+                      className="w-10 h-10 object-contain"
+                    />
+                    {cartItems.length > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                        {cartItems.length}
+                      </span>
+                    )}
+                  </div>
                 </Link>
               </div>
             </div>
@@ -155,11 +164,18 @@ function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center gap-2"
               >
-                <img
-                  src={cart}
-                  alt="Cart"
-                  className="w-10 h-10 object-contain"
-                />
+                <div className="relative">
+                  <img
+                    src={cart}
+                    alt="Cart"
+                    className="w-10 h-10 object-contain"
+                  />
+                  {cartItems.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {cartItems.length}
+                    </span>
+                  )}
+                </div>
                 <span>Cart</span>
               </Link>
             </li>
@@ -168,7 +184,7 @@ function Navbar() {
               <Link
                 to="/ProductCard"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-5 py-2.5 bg-yellow-400 text-gray-900 rounded-full text-center font-semibold hover:bg-yellow-500 transition-all"
+                className="block px-5 py-2.5 bg-yellow-400 text-gray-900 rounded-full text W-100 text-center font-semibold hover:bg-yellow-500 transition-all"
               >
                 Our Products
                 <span className="block text-xs text-gray-800 mt-1">

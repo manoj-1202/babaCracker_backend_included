@@ -1,66 +1,220 @@
-import React from "react";
-import page1 from "../assets/products/page1.jpg";
-import page2 from "../assets/products/page2.jpg";
-import page3 from "../assets/products/page3.jpg";
-import page4 from "../assets/products/page4.jpg";
-import page5 from "../assets/products/page5.jpg";
-import page6 from "../assets/products/page6.jpg";
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { productData } from "./ProductData";
+import { useCart } from "../Cart/CartContext";
+import { Link } from "react-router-dom";
+import cart from "../assets/cart.png";
 
-const pages = [
-  { id: 1, image: page1, title: " 1" },
-  { id: 2, image: page2, title: "2" },
-  { id: 3, image: page3, title: "3" },
-  { id: 4, image: page4, title: "4" },
-  { id: 5, image: page5, title: "5" },
-  { id: 6, image: page6, title: "6" },
-];
+const categories = ["All", ...new Set(productData.map((p) => p.category))];
 
-const ProductCard = () => {
-  // Download function
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = "/products.pdf";
-    link.download = "products.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+export default function ProductFeaturePage() {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState("default");
+  const [lastAddedId, setLastAddedId] = useState(null);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false); // State to toggle category menu visibility
+
+  const { cartItems, addToCart } = useCart();
+
+  const filteredProducts = useMemo(() => {
+    let products = [...productData];
+    if (selectedCategory !== "All") {
+      products = products.filter((p) => p.category === selectedCategory);
+    }
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase().replace(/\s+/g, "");
+      products = products.filter((p) =>
+        p.name.toLowerCase().replace(/\s+/g, "").includes(query)
+      );
+    }
+
+    if (sortOrder === "asc") {
+      products.sort((a, b) => a.rate - b.rate);
+    } else if (sortOrder === "desc") {
+      products.sort((a, b) => b.rate - a.rate);
+    }
+    return products;
+  }, [selectedCategory, searchQuery, sortOrder]);
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setLastAddedId(product.id);
+    setTimeout(() => setLastAddedId(null), 2000);
   };
 
-  return (
-    <div className="min-h-screen bg-purple-900 py-10 px-4 text-white">
-      <h2 className="text-3xl font-bold text-center mb-4">
-        OUR PRODUCTS CATALOG
-      </h2>
+  const isInCart = (id) => cartItems.some((item) => item.id === id);
 
-      {/* Download Button */}
-      <div className="flex justify-center mb-8">
-        <button
-          onClick={handleDownload}
-          className="bg-white text-purple-900 font-bold py-2 px-6 rounded-full shadow-md hover:bg-red-500 transition duration-300"
-        >
-          Download PDF
-        </button>
+  return (
+    <div className="p-10 max-w-7xl mx-auto bg-gray-600 min-h-screen">
+      <div className="pb-6">
+        <h2 className="text-3xl font-bold text-center text-white">
+          Our Products Catalog
+        </h2>
+
+        {/* Cart Icon */}
+        <div className="flex justify-end fixed bottom-4 right-4 z-50">
+          <Link to="/cart">
+            <img
+              src={cart}
+              alt="Cart"
+              className="w-10 h-15 sm:w-12 sm:h-10 object-contain"
+            />
+          </Link>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-5 max-w-6xl mx-auto ">
-        {pages.map((page) => (
-          <div
-            key={page.id}
-            className="bg-purple-900 text-white rounded-lg overflow-hidden shadow-lg"
+      {/* Main Layout: Two Columns for All Screens */}
+      <div className="flex flex-col sm:flex-row gap-6">
+        {/* Category Sidebar (Left) */}
+        <div className="w-full sm:w-1/4 sm:bg-gray-700 text-white p-4 h-auto sm:h-full">
+
+          {/* Mobile Menu Button to Toggle Category Menu */}
+          <button
+            className="sm:hidden text-white bg-blue-600 px-4 py-2 rounded w-full mb-4 flex items-center justify-between"
+            onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
           >
-            <div className="p-4">
-              <h3 className="text-xl font-semibold">{page.title}</h3>
-            </div>
-            <img
-              src={page.image}
-              alt={`Product Page ${page.title}`}
-              className="w-full h-100 object-cover"
-            />
+            Categories
+            <svg
+              className={`w-4 h-4 ml-2 transition-transform duration-300 ${
+                isCategoryMenuOpen ? "rotate-180" : "rotate-0"
+              }`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+
+          {/* Category Dropdown Menu for Mobile */}
+          {isCategoryMenuOpen && (
+            <ul className="sm:hidden p-4 rounded-lg shadow-md mt-2">
+              {categories.map((cat) => (
+                <li key={cat} className="mb-4">
+                  <button
+                    onClick={() => {
+                      setSelectedCategory(cat);
+                      setIsCategoryMenuOpen(false); // Close menu on selection
+                    }}
+                    className={`w-full text-left p-3 rounded-lg text-white hover:bg-blue-500 transition-colors ${
+                      selectedCategory === cat ? "bg-blue-600" : "bg-gray-700"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Category Sidebar for Larger Screens */}
+          <div className="hidden sm:block">
+            <h3 className="text-xl font-bold mb-4">Categories</h3>
+            <ul>
+              {categories.map((cat) => (
+                <li key={cat} className="mb-3">
+                  <button
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`w-full text-left p-2 rounded hover:bg-blue-600 ${
+                      selectedCategory === cat ? "bg-blue-600" : ""
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-        ))}
+        </div>
+
+        {/* Products (Right) */}
+        <div className="w-full sm:w-3/4">
+          {/* Filters */}
+          <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
+            <input
+              type="text"
+              placeholder="Search by name"
+              className="p-2 border rounded shadow w-full sm:w-1/3 bg-white border-gray-300"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+
+            <select
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="p-2 rounded shadow bg-white border border-gray-300"
+            >
+              <option value="default">Sort by Price</option>
+              <option value="asc">Low to High</option>
+              <option value="desc">High to Low</option>
+            </select>
+          </div>
+
+          {/* Product Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <AnimatePresence>
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => {
+                  const added = isInCart(product.id);
+                  return (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.6 }}
+                      className="border p-4 rounded-lg shadow hover:shadow-lg bg-gray-100 relative"
+                    >
+                      <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                        {product.name}
+                      </h2>
+                      <p className="text-gray-600">
+                        Category: {product.category}
+                      </p>
+                      <p className="text-gray-800 font-bold">
+                        ₹{product.rate} / {product.per}
+                      </p>
+                      <button
+                        className={`mt-4 px-4 py-2 rounded transition-colors ${
+                          added
+                            ? "bg-green-500 text-white cursor-not-allowed"
+                            : "bg-blue-500 text-white hover:bg-green-600"
+                        }`}
+                        onClick={() => handleAddToCart(product)}
+                        disabled={added}
+                      >
+                        {added ? "Added to Cart" : "Add to Cart"}
+                      </button>
+
+                      {lastAddedId === product.id && (
+                        <div className="absolute top-2 right-1 bg-green-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">
+                          {product.name} added!
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })
+              ) : (
+                <motion.p
+                  className="text-center text-gray-600 text-lg col-span-full mt-10"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  No products found.
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
       </div>
     </div>
   );
-};
-
-export default ProductCard;
+}

@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "../assets/logo.png";
+import cart from "../assets/cart.png";
 import { Phone, MessageSquareText } from "lucide-react";
 
 function Navbar() {
@@ -65,13 +66,23 @@ function Navbar() {
               <div className="relative group">
                 <Link
                   to="/ProductCard"
-                  className="px-5 py-2.5 bg-yellow-400 text-gray-900 rounded-full font-semibold text-base hover:bg-yellow-500 transition-all duration-300 hover:shadow-lg"
+                  className="px-2 py-2.5 bg-yellow-400 text-gray-900 rounded-full font-semibold text-base hover:bg-yellow-500 transition-all duration-300 hover:shadow-lg"
                 >
                   Our Products
                 </Link>
                 <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 text-xs text-white bg-gray-800 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   Discover Exclusive Deals
                 </span>
+              </div>
+
+              <div>
+                <Link to="/cart">
+                  <img
+                    src={cart}
+                    alt="Cart"
+                    className="w-10 h-10  object-contain"
+                  />
+                </Link>
               </div>
             </div>
 
@@ -137,6 +148,22 @@ function Navbar() {
                 </Link>
               </li>
             ))}
+
+            <li>
+              <Link
+                to="/cart"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2"
+              >
+                <img
+                  src={cart}
+                  alt="Cart"
+                  className="w-10 h-10 object-contain"
+                />
+                <span>Cart</span>
+              </Link>
+            </li>
+
             <li>
               <Link
                 to="/ProductCard"

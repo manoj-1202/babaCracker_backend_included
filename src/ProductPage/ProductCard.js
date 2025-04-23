@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { productData } from "./ProductData";
 import { useCart } from "../Cart/CartContext";
@@ -12,9 +12,15 @@ export default function ProductFeaturePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [lastAddedId, setLastAddedId] = useState(null);
-  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false); // State to toggle category menu visibility
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
   const { cartItems, addToCart } = useCart();
+
+  const productGridRef = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     let products = [...productData];
@@ -45,12 +51,18 @@ export default function ProductFeaturePage() {
 
   const isInCart = (id) => cartItems.some((item) => item.id === id);
 
+  const handleCategoryChange = (cat) => {
+    setSelectedCategory(cat);
+    setIsCategoryMenuOpen(false);
+    setTimeout(() => {
+      productGridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
   return (
-    <div className="p-10 max-w-7xl mx-auto bg-gray-600 min-h-screen">
+    <div className="p-10 max-w-7xl mx-auto min-h-screen">
       <div className="pb-6">
-        <h2 className="text-3xl font-bold text-center text-white">
-          Our Products Catalog
-        </h2>
+        <h2 className="text-3xl font-bold text-center">Our Products Catalog</h2>
 
         {/* Cart Icon */}
         <div className="flex justify-end fixed bottom-4 right-4 z-50">
@@ -64,12 +76,10 @@ export default function ProductFeaturePage() {
         </div>
       </div>
 
-      {/* Main Layout: Two Columns for All Screens */}
       <div className="flex flex-col sm:flex-row gap-6">
-        {/* Category Sidebar (Left) */}
-        <div className="w-full sm:w-1/4 sm:bg-gray-700 text-white p-4 h-auto sm:h-full">
-
-          {/* Mobile Menu Button to Toggle Category Menu */}
+        {/* Category Sidebar */}
+        <div className="w-full sm:w-1/4 sm:bg-gray-100 text-white p-4 h-auto sm:h-full">
+          {/* Mobile Toggle Button */}
           <button
             className="sm:hidden text-white bg-blue-600 px-4 py-2 rounded w-full mb-4 flex items-center justify-between"
             onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
@@ -93,18 +103,15 @@ export default function ProductFeaturePage() {
             </svg>
           </button>
 
-          {/* Category Dropdown Menu for Mobile */}
+          {/* Mobile Category Dropdown */}
           {isCategoryMenuOpen && (
             <ul className="sm:hidden p-4 rounded-lg shadow-md mt-2">
               {categories.map((cat) => (
                 <li key={cat} className="mb-4">
                   <button
-                    onClick={() => {
-                      setSelectedCategory(cat);
-                      setIsCategoryMenuOpen(false); // Close menu on selection
-                    }}
-                    className={`w-full text-left p-3 rounded-lg text-white hover:bg-blue-500 transition-colors ${
-                      selectedCategory === cat ? "bg-blue-600" : "bg-gray-700"
+                    onClick={() => handleCategoryChange(cat)}
+                    className={`w-full text-left p-3 rounded-lg text-black font-semibold hover:bg-blue-500 transition-colors ${
+                      selectedCategory === cat ? "bg-blue-500" : "bg-gray-100"
                     }`}
                   >
                     {cat}
@@ -114,16 +121,16 @@ export default function ProductFeaturePage() {
             </ul>
           )}
 
-          {/* Category Sidebar for Larger Screens */}
+          {/* Desktop Category Sidebar */}
           <div className="hidden sm:block">
-            <h3 className="text-xl font-bold mb-4">Categories</h3>
+            <h3 className="text-xl font-bold mb-4 text-black">Categories</h3>
             <ul>
               {categories.map((cat) => (
                 <li key={cat} className="mb-3">
                   <button
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`w-full text-left p-2 rounded hover:bg-blue-600 ${
-                      selectedCategory === cat ? "bg-blue-600" : ""
+                    onClick={() => handleCategoryChange(cat)}
+                    className={`w-full text-left p-2 rounded hover:bg-blue-600 text-black font-semibold ${
+                      selectedCategory === cat ? "bg-blue-500" : ""
                     }`}
                   >
                     {cat}
@@ -134,7 +141,7 @@ export default function ProductFeaturePage() {
           </div>
         </div>
 
-        {/* Products (Right) */}
+        {/* Product Section */}
         <div className="w-full sm:w-3/4">
           {/* Filters */}
           <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
@@ -145,7 +152,6 @@ export default function ProductFeaturePage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-
             <select
               onChange={(e) => setSortOrder(e.target.value)}
               className="p-2 rounded shadow bg-white border border-gray-300"
@@ -157,7 +163,10 @@ export default function ProductFeaturePage() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div
+            ref={productGridRef}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+          >
             <AnimatePresence>
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => {

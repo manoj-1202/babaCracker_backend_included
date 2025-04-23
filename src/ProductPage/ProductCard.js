@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { productData } from "./ProductData";
@@ -17,6 +18,15 @@ export default function ProductFeaturePage() {
   const { cartItems, addToCart } = useCart();
 
   const productGridRef = useRef(null);
+
+
+  const categoryCounts = useMemo(() => {
+    const counts = productData.reduce((acc, product) => {
+      acc[product.category] = (acc[product.category] || 0) + 1;
+      return acc;
+    }, { All: productData.length }); 
+    return counts;
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,17 +70,17 @@ export default function ProductFeaturePage() {
   };
 
   return (
-    <div className="p-10 max-w-7xl mx-auto min-h-screen">
+    <div className="p-4 sm:p-10 max-w-7xl mx-auto min-h-screen bg-gray-50">
       <div className="pb-6">
-        <h2 className="text-3xl font-bold text-center">Our Products Catalog</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800">Our Products Catalog</h2>
 
         {/* Cart Icon */}
-        <div className="flex justify-end fixed bottom-4 right-4 z-50">
-          <Link to="/cart">
+        <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+          <Link to="/cart" aria-label="View Cart">
             <img
               src={cart}
               alt="Cart"
-              className="w-10 h-15 sm:w-12 sm:h-10 object-contain"
+              className="w-10 h-10 sm:w-12 sm:h-12 object-contain hover:opacity-80 transition-opacity"
             />
           </Link>
         </div>
@@ -78,11 +88,13 @@ export default function ProductFeaturePage() {
 
       <div className="flex flex-col sm:flex-row gap-6">
         {/* Category Sidebar */}
-        <div className="w-full sm:w-1/4 sm:bg-gray-100 text-white p-4 h-auto sm:h-full">
+        <div className="w-full sm:w-1/4 sm:bg-white sm:shadow-md p-4 sm:p-6">
           {/* Mobile Toggle Button */}
           <button
-            className="sm:hidden text-white bg-blue-600 px-4 py-2 rounded w-full mb-4 flex items-center justify-between"
+            className="sm:hidden bg-blue-600 text-white px-4 py-2 rounded w-full mb-4 flex items-center justify-between hover:bg-blue-700 transition-colors"
             onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
+            aria-expanded={isCategoryMenuOpen}
+            aria-controls="category-menu"
           >
             Categories
             <svg
@@ -105,16 +117,16 @@ export default function ProductFeaturePage() {
 
           {/* Mobile Category Dropdown */}
           {isCategoryMenuOpen && (
-            <ul className="sm:hidden p-4 rounded-lg shadow-md mt-2">
+            <ul id="category-menu" className="sm:hidden p-4 rounded-lg shadow-md mt-2 bg-white">
               {categories.map((cat) => (
                 <li key={cat} className="mb-4">
                   <button
                     onClick={() => handleCategoryChange(cat)}
-                    className={`w-full text-left p-3 rounded-lg text-black font-semibold hover:bg-blue-500 transition-colors ${
-                      selectedCategory === cat ? "bg-blue-500" : "bg-gray-100"
+                    className={`w-full text-left p-3 rounded-lg text-gray-800 font-semibold hover:bg-blue-500 hover:text-white transition-colors ${
+                      selectedCategory === cat ? "bg-blue-500 text-white" : "bg-gray-100"
                     }`}
                   >
-                    {cat}
+                    {cat} ({categoryCounts[cat] || 0})
                   </button>
                 </li>
               ))}
@@ -123,17 +135,17 @@ export default function ProductFeaturePage() {
 
           {/* Desktop Category Sidebar */}
           <div className="hidden sm:block">
-            <h3 className="text-xl font-bold mb-4 text-black">Categories</h3>
+            <h3 className="text-xl font-bold mb-4 text-gray-800">Categories</h3>
             <ul>
               {categories.map((cat) => (
                 <li key={cat} className="mb-3">
                   <button
                     onClick={() => handleCategoryChange(cat)}
-                    className={`w-full text-left p-2 rounded hover:bg-blue-600 text-black font-semibold ${
-                      selectedCategory === cat ? "bg-blue-500" : ""
+                    className={`w-full text-left p-2 rounded text-gray-800 font-semibold hover:bg-blue-500 hover:text-white transition-colors ${
+                      selectedCategory === cat ? "bg-blue-500 text-white" : ""
                     }`}
                   >
-                    {cat}
+                    {cat} ({categoryCounts[cat] || 0})
                   </button>
                 </li>
               ))}
@@ -148,13 +160,15 @@ export default function ProductFeaturePage() {
             <input
               type="text"
               placeholder="Search by name"
-              className="p-2 border rounded shadow w-full sm:w-1/3 bg-white border-gray-300"
+              className="p-2 border rounded shadow w-full sm:w-1/3 bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search products by name"
             />
             <select
               onChange={(e) => setSortOrder(e.target.value)}
-              className="p-2 rounded shadow bg-white border border-gray-300"
+              className="p-2 rounded shadow bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Sort products by price"
             >
               <option value="default">Sort by Price</option>
               <option value="asc">Low to High</option>
@@ -178,9 +192,10 @@ export default function ProductFeaturePage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.6 }}
-                      className="border p-4 rounded-lg shadow hover:shadow-lg bg-gray-100 relative"
+                      className="border p-4 rounded-lg shadow hover:shadow-lg bg-white relative"
                     >
-                      <h2 className="text-2xl font-semibold mb-2 text-gray-800">
+                    
+                      <h2 className="text-xl font-semibold mb-2 text-gray-800">
                         {product.name}
                       </h2>
                       <p className="text-gray-600">
@@ -193,16 +208,17 @@ export default function ProductFeaturePage() {
                         className={`mt-4 px-4 py-2 rounded transition-colors ${
                           added
                             ? "bg-green-500 text-white cursor-not-allowed"
-                            : "bg-blue-500 text-white hover:bg-green-600"
+                            : "bg-blue-500 text-white hover:bg-blue-600"
                         }`}
                         onClick={() => handleAddToCart(product)}
                         disabled={added}
+                        aria-label={added ? `${product.name} added to cart` : `Add ${product.name} to cart`}
                       >
                         {added ? "Added to Cart" : "Add to Cart"}
                       </button>
 
                       {lastAddedId === product.id && (
-                        <div className="absolute top-2 right-1 bg-green-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">
+                        <div className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">
                           {product.name} added!
                         </div>
                       )}

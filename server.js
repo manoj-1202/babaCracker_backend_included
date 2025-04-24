@@ -20,8 +20,8 @@ app.post("/place-order", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "hpavilion1202@gmail.com", // your Gmail
-        pass: "eyns egnt aqui mndx",     // Gmail App Password
+        user: "ttsapplications2025@gmail.com", // Gmail id
+        pass: "djor ksrg pkzt zznd", //   App Password
       },
     });
 

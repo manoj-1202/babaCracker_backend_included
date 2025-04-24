@@ -1,7 +1,12 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
 
 export default function ThankYouPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-white px-4">
       <h1 className="text-3xl sm:text-4xl font-bold text-green-600 mb-4">

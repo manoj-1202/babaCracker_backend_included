@@ -78,7 +78,7 @@ function Navbar() {
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
                   <img src={Logo} alt="Logo" className="h-16 object-contain" />
                 </Link>
-                <h1 className="text-red-600 font-serif text-xl">
+                <h1 className="text-red-600 font-bold text-xl">
                   Baba Crackers
                 </h1>
                 <button onClick={() => setIsMobileMenuOpen(false)}>

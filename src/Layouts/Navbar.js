@@ -13,8 +13,8 @@ function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="bg-gray-200 shadow-xl text-black">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="max-w-7xl mx-auto  bg-gray-200 shadow-xl text-black">
+        <div className=" px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-auto md:h-28">
             {/* Mobile View */}
             <div className="flex flex-col w-full md:hidden py-4">

@@ -17,7 +17,7 @@ import Testimonial from "./Layouts/Testimonial";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col font-poppins">
+    <div className="min-h-screen  font-poppins overflow-x-hidden ">
       <BrowserRouter>
         <CartProvider>
           <Navbar />

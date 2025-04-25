@@ -15,7 +15,7 @@ export default function ProductFeaturePage() {
   const [lastRemovedId, setLastRemovedId] = useState(null);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const { cartItems, addToCart, removeFromCart, updateCartItem } = useCart();
 
   const productGridRef = useRef(null);
 
@@ -26,6 +26,11 @@ export default function ProductFeaturePage() {
     }, { All: productData.length });
     return counts;
   }, []);
+
+  const totalAmount = cartItems.reduce(
+    (acc, item) => acc + item.rate * item.qty,
+    0
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -64,7 +69,39 @@ export default function ProductFeaturePage() {
     setTimeout(() => setLastRemovedId(null), 2000);
   };
 
+  const handleIncrement = (product) => {
+    const cartItem = cartItems.find((item) => item.id === product.id);
+    if (cartItem && typeof updateCartItem === "function") {
+      updateCartItem(product.id, cartItem.qty + 1);
+    }
+  };
+
+  const handleDecrement = (product) => {
+    const cartItem = cartItems.find((item) => item.id === product.id);
+    if (cartItem && typeof updateCartItem === "function") {
+      if (cartItem.qty > 1) {
+        updateCartItem(product.id, cartItem.qty - 1);
+      } else {
+        handleRemoveFromCart(product.id);
+      }
+    }
+  };
+
+  const handleQuantityChange = (product, value) => {
+    const qty = parseInt(value, 10);
+    if (isNaN(qty) || qty < 1) {
+      handleRemoveFromCart(product.id);
+    } else if (typeof updateCartItem === "function") {
+      updateCartItem(product.id, qty);
+    }
+  };
+
   const isInCart = (id) => cartItems.some((item) => item.id === id);
+
+  const getItemQuantity = (id) => {
+    const cartItem = cartItems.find((item) => item.id === id);
+    return cartItem ? cartItem.qty : 0;
+  };
 
   const handleCategoryChange = (cat) => {
     setSelectedCategory(cat);
@@ -80,25 +117,41 @@ export default function ProductFeaturePage() {
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Our Products Catalog
         </h2>
+        </div>
 
         {/* Cart Icon */}
-        <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
-          <Link to="/cart" aria-label="View Cart">
-            <div className="relative">
-              <img
-                src={cart}
-                alt="Cart"
-                className="w-10 h-10 sm:w-12 sm:h-12 object-contain hover:opacity-80 transition-opacity"
-              />
-              {cartItems.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItems.length}
-                </span>
-              )}
-            </div>
-          </Link>
-        </div>
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 sm:bottom-6">
+  <Link to="/cart" aria-label="View Cart">
+    <div className="relative flex items-center gap-3 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-full px-4 py-2 shadow-lg">
+      {/* Cart Icon */}
+      <div className="relative">
+        <img
+          src={cart}
+          alt="Cart"
+          className="w-8 h-8 sm:w-10 sm:h-10 object-contain hover:opacity-80 transition-opacity"
+        />
+        {cartItems.length > 0 && (
+          <span className="absolute -top-1 -right-1 bg-white text-blue-600 text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+            {cartItems.length}
+          </span>
+        )}
       </div>
+
+      {/* quantity and Total */}
+      <div className="flex items-center gap-1">
+        <p>Items:</p>
+        <span>{cartItems.length}</span>
+      </div>
+
+      <div className="flex items-center gap-1">
+        <p>Total:</p>
+        <span>₹{totalAmount}</span>
+      </div>
+    </div>
+  </Link>
+</div>
+
+
 
       <div className="flex flex-col sm:flex-row gap-6">
         {/* Category Sidebar */}
@@ -198,11 +251,12 @@ export default function ProductFeaturePage() {
           {/* Product Grid */}
           <div className="w-full overflow-x-auto" ref={productGridRef}>
             {/* Header Row */}
-            <div className="grid grid-cols-[60px_2fr_1fr_1fr] gap-4 font-semibold text-gray-700 bg-gray-100 p-4 rounded-t-md">
+            <div className="grid grid-cols-[60px_2fr_1fr_1fr_150px] gap-4 font-semibold text-gray-700 bg-gray-100 p-4 rounded-t-md">
               <div>S.No</div>
               <div>Name of the Product</div>
               <div>Rate (₹)</div>
               <div>Quantity</div>
+              <div>Action</div>
             </div>
 
             <AnimatePresence>
@@ -216,34 +270,49 @@ export default function ProductFeaturePage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4 }}
-                      className="grid grid-cols-[60px_2fr_1fr_1fr] gap-4 items-center border-b p-4 relative"
+                      className="grid grid-cols-[60px_2fr_1fr_1fr_150px] gap-4 items-center border-b p-4 relative"
                     >
                       <div>{index + 1}</div>
                       <div className="font-semibold">{product.name}</div>
                       <div className="text-gray-700">₹{product.rate}</div>
                       <div className="text-gray-700">{product.per}</div>
-
-                      <div className="col-span-4 mt-2 flex justify-center relative">
-                        <button
-                          className={`px-4 py-2 rounded transition-colors ${
-                            added
-                              ? "bg-red-500 text-white hover:bg-red-600"
-                              : "bg-blue-500 text-white hover:bg-blue-600"
-                          }`}
-                          onClick={() =>
-                            added
-                              ? handleRemoveFromCart(product.id)
-                              : handleAddToCart(product)
-                          }
-                          disabled={false}
-                          aria-label={
-                            added
-                              ? `Remove ${product.name} from cart`
-                              : `Add ${product.name} to cart  cart`
-                          }
-                        >
-                          {added ? "Remove from Cart" : "Add to Cart"}
-                        </button>
+                      <div className="flex justify-center items-center relative">
+                        {added ? (
+                          <div className="flex items-center gap-2 border rounded px-2 py-1">
+                            <button
+                              className="text-base sm:text-lg font-bold text-gray-700 px-1 sm:px-2"
+                              onClick={() => handleIncrement(product)}
+                              aria-label={`Increment quantity of ${product.name}`}
+                            >
+                              +
+                            </button>
+                            <input
+                              type="number"
+                              value={getItemQuantity(product.id)}
+                              onChange={(e) =>
+                                handleQuantityChange(product, e.target.value)
+                              }
+                              className="w-10 sm:w-12 text-center text-gray-800 font-medium border-none focus:ring-0"
+                              min="1"
+                              aria-label={`Quantity of ${product.name}`}
+                            />
+                            <button
+                              className="text-base sm:text-lg font-bold text-gray-700 px-1 sm:px-2"
+                              onClick={() => handleDecrement(product)}
+                              aria-label={`Decrement quantity of ${product.name}`}
+                            >
+                              −
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                            onClick={() => handleAddToCart(product)}
+                            aria-label={`Add ${product.name} to cart`}
+                          >
+                            Add to Cart
+                          </button>
+                        )}
 
                         {lastAddedId === product.id && (
                           <div className="absolute top-[-2rem] bg-green-600 text-white text-xs px-2 py-1 rounded shadow z-10 animate-pulse">

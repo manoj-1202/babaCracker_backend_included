@@ -4,7 +4,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-10">
+    <footer className="max-w-7xl mx-auto bg-yellow-400 text-black py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Company Info */}
         <div>
@@ -101,19 +101,19 @@ const Footer = () => {
           <h2 className="font-bold text-lg mb-2">Reach Us On</h2>
           <div className="flex gap-4 mt-2">
             <button
-              className="bg-black border border-gray-700 p-2 rounded-full hover:text-blue-800 transition"
+              className="bg-yellow-400 border border-black p-2 rounded-full hover:text-blue-800 transition"
               aria-label="Facebook"
             >
               <Facebook size={20} />
             </button>
             <button
-              className="bg-black border border-gray-700 p-2 rounded-full hover:text-blue-800 transition"
+              className="bg-yellow-400 border border-black p-2 p-2 rounded-full hover:text-blue-800 transition"
               aria-label="Instagram"
             >
               <Instagram size={20} />
             </button>
             <button
-              className="bg-black border border-gray-700 p-2 rounded-full hover:text-blue-800 transition"
+              className="bg-yellow-400 border border-black p-2 p-2 rounded-full hover:text-blue-800 transition"
               aria-label="Twitter"
             >
               <Twitter size={20} />
@@ -123,7 +123,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Line */}
-      <div className="mt-8 text-center text-sm text-white">
+      <div className="mt-8 text-center text-sm text-black">
         © {new Date().getFullYear()} Baba Crackers. All rights reserved.
         <p className="mt-1">@ S Cube Innovation</p>
       </div>

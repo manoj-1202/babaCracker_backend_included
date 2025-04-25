@@ -192,9 +192,9 @@ export default function CartPage() {
                     <div className="flex items-center gap-2 border rounded px-2 py-1">
                       <button
                         className="text-base font-bold text-gray-700 px-1"
-                        onClick={() => handleIncrement(item)}
+                        onClick={() => handleDecrement(item)}
                       >
-                        +
+                        −
                       </button>
                       <input
                         type="number"
@@ -207,9 +207,9 @@ export default function CartPage() {
                       />
                       <button
                         className="text-base font-bold text-gray-700 px-1"
-                        onClick={() => handleDecrement(item)}
+                        onClick={() => handleIncrement(item)}
                       >
-                        −
+                        +
                       </button>
                     </div>
                   </div>
@@ -223,7 +223,7 @@ export default function CartPage() {
 
             {/* Summary Section */}
             <div className="mt-6 sm:mt-10 border-t pt-4 sm:pt-6 flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
                 <div className="text-base sm:text-lg font-bold">
                   Total Items:{" "}
                   <span className="text-blue-600 font-bold">{totalItems}</span>

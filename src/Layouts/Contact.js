@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const ContactPage = () => {
   return (
-    <div className="px-4 py-5 max-w-7xl mx-auto">
+    <div className="px-4 py-16 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:px-10">
         {/* Left - Contact Info */}
         <motion.div
@@ -12,7 +12,7 @@ const ContactPage = () => {
           transition={{ duration: 1.3 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-2xl md:text-3xl font-bold mb-4 text-center lg:text-left">
             Get in Touch
           </h2>
           <p className="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed">
@@ -52,7 +52,7 @@ const ContactPage = () => {
           transition={{ duration: 1.3, delay: 0.1 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 text-center lg:text-left">
+          <h2 className="text-3xl sm:text-2xl md:text-3xl font-bold mb-6 text-center lg:text-left">
             Contact Us
           </h2>
           <form className="space-y-4">

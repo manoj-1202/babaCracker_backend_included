@@ -12,6 +12,8 @@ import CartPage from "./Cart/CartPage";
 import { CartProvider } from "./Cart/CartContext";
 import ProductFeaturePage from "./ProductPage/ProductCard";
 import ThankYouPage from "./Cart/ThankYouPage";
+import Success from "./Layouts/Success";
+import Testimonial from "./Layouts/Testimonial";
 
 function App() {
   return (
@@ -26,6 +28,9 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/about" element={<About />} />
               <Route path="/moveImage" element={<MoveImage />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/testimonial" element={<Testimonial />} />
+              
               <Route path="/service" element={<OurService />} />
               <Route path="/ourProduct" element={<Product />} />
               <Route path="/ProductCard" element={<ProductFeaturePage />} />

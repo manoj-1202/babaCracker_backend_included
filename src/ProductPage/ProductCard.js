@@ -256,7 +256,7 @@ export default function ProductFeaturePage() {
           {/* Product Grid */}
           <div className="w-full overflow-x-auto" ref={productGridRef}>
             {/* Header Row */}
-            <div className="grid grid-cols-[50px_2fr_1fr_1fr_120px] gap-4 sm:gap-4 font-semibold text-gray-700 bg-gray-100 p-2 sm:p-4 rounded-t-md text-base sm:text-sm lg:text-xl">
+            <div className="grid grid-cols-[50px_2fr_1fr_1fr_120px] gap-4 sm:gap-4 font-semibold text-gray-700 bg-gray-100 p-2 sm:p-4 rounded-t-md text-xs sm:text-sm lg:text-xl">
               <div>S.No</div>
               <div>Name of the Product</div>
               <div>Rate (₹)</div>
@@ -275,7 +275,7 @@ export default function ProductFeaturePage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                       transition={{ duration: 0.4 }}
-                      className="grid grid-cols-[50px_2fr_1fr_1fr_120px] gap-2 sm:gap-4 items-center border-b p-2 sm:p-4 text-base sm:text-sm lg:text-base"
+                      className="grid grid-cols-[50px_2fr_1fr_1fr_120px] gap-2 sm:gap-4 items-center border-b p-2 sm:p-4 text-xs sm:text-sm lg:text-base"
                     >
                       <div>{index + 1}</div>
                       <div className="font-semibold">{product.name}</div>

@@ -120,7 +120,7 @@ export default function ProductFeaturePage() {
         </div>
 
         {/* Cart Icon */}
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 sm:bottom-6">
+        <div className="fixed bottom-4 inset-x-0 z-50 sm:bottom-6 flex justify-center">
   <Link to="/cart" aria-label="View Cart">
     <div className="relative flex items-center gap-3 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-full px-4 py-2 shadow-lg">
       {/* Cart Icon */}
@@ -137,12 +137,13 @@ export default function ProductFeaturePage() {
         )}
       </div>
 
-      {/* quantity and Total */}
+      {/* Quantity */}
       <div className="flex items-center gap-1">
         <p>Items:</p>
         <span>{cartItems.length}</span>
       </div>
 
+      {/* Total */}
       <div className="flex items-center gap-1">
         <p>Total:</p>
         <span>₹{totalAmount}</span>
@@ -150,6 +151,7 @@ export default function ProductFeaturePage() {
     </div>
   </Link>
 </div>
+
 
 
 

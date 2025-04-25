@@ -10,12 +10,6 @@ function Navbar() {
   const location = useLocation();
   const { cartItems } = useCart();
 
-  const navLinks = [
-    { label: "Home", path: "/", description: "Explore our homepage" },
-    { label: "About", path: "/about", description: "Learn our story" },
-    { label: "Contact", path: "/contact", description: "Get in touch" },
-  ];
-
   return (
     <>
       {/* Navbar */}
@@ -37,7 +31,7 @@ function Navbar() {
                   Baba Crackers
                 </h1>
                 <div className="text-center text-blue-800 mt-2">
-                  <p>XXXXXXX - 8754821960 </p>
+                  <p>XXXXXXX - 8754821960</p>
                   <p>YYYYYYY - 8675006166</p>
                 </div>
               </div>
@@ -73,78 +67,55 @@ function Navbar() {
               </div>
             </div>
 
-            {/* Sidebar Menu */}
+            {/* Dropdown Menu for Mobile */}
             <div
-              className={`fixed top-0 left-0 h-full w-72 bg-white backdrop-blur-lg shadow-2xl transform transition-transform duration-500 ease-in-out z-50 ${
-                isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+              className={`w-full backdrop-blur-md bg-white/30 shadow-2xl transform transition-transform duration-500 ease-in-out z-50 md:hidden absolute top-0 left-0 ${
+                isMobileMenuOpen ? "translate-y-0" : "-translate-y-full"
               }`}
             >
-              <div className="flex items-center justify-between px-5 py-4 border-b bg-gray-200">
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b bg-white/40 backdrop-blur-md">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
                   <img src={Logo} alt="Logo" className="h-16 object-contain" />
                 </Link>
-                <h1 className="text-red-600 font-serif text-xl">Baba Crackers</h1>
+                <h1 className="text-red-600 font-serif text-xl">
+                  Baba Crackers
+                </h1>
                 <button onClick={() => setIsMobileMenuOpen(false)}>
                   <X size={24} />
                 </button>
               </div>
-              <div className="px-6 py-6 bg-yellow-400">
-                <p className=" text-base mb-6 font-semibold">
+
+              {/* Menu Items */}
+              <div className="px-6 py-6 flex flex-col items-center justify-center text-center">
+                <p className="text-base mb-6 font-semibold text-black">
                   Welcome! Explore our world.
                 </p>
-                <ul className="flex flex-col gap-6 text-lg font-semibold text-black">
-                  <li>
-                    <Link
-                      to="/"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-white bg-red-600 px-4 py-2 rounded-2xl"
-                    >
-                      Home
-                    </Link>
-                  </li>
-                 
-                  <li>
-                    <Link
-                      to="/productCard"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-white bg-red-600 px-4 py-2 rounded-2xl"
-                    >
-                      Our Pricelist
-                    </Link>
-                  </li>
+                <ul className="flex flex-col gap-6 text-lg font-semibold text-black w-full items-center">
+                  {[
+                    { label: "Home", to: "/" },
+                    { label: "Our Pricelist", to: "/productCard" },
+                    { label: "About Us", to: "/about" },
+                    { label: "Contact Us", to: "/contact" },
+                    { label: "Download Pricelist", to: "/download" },
+                  ].map((item, index) => (
+                    <li key={index} className="w-full flex justify-center">
+                      <Link
+                        to={item.to}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-white bg-red-600 px-6 py-2 rounded-2xl w-fit"
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
 
-                  <li>
-                    <Link
-                      to="/about"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-white bg-red-600 px-4 py-2 rounded-2xl"
-                    >
-                      About Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/contact"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-white bg-red-600 px-4 py-2 rounded-2xl"
-                    >
-                      Contact Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/download"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="text-white bg-red-600 px-4 py-2 rounded-2xl"
-                    >
-                      Download Pricelist
-                    </Link>
-                  </li>
-                  <li>
+                  {/* Cart Item */}
+                  <li className="w-full flex justify-center">
                     <Link
                       to="/cart"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 text-black"
                     >
                       <div className="relative">
                         <img
@@ -181,7 +152,7 @@ function Navbar() {
                     Baba Crackers
                   </h1>
                   <div className="text-blue-800">
-                    <p>XXXXXXX - 8754821960 </p>
+                    <p>XXXXXXX - 8754821960</p>
                     <p>YYYYYYY - 8675006166</p>
                   </div>
                 </div>
@@ -191,7 +162,7 @@ function Navbar() {
               <div className="flex items-center space-x-4">
                 <Link
                   to="/"
-                  className="text-white bg-red-600 px-4 py-2 rounded-2xl hover:bg-red-700 transition-colors "
+                  className="text-white bg-red-600 px-4 py-2 rounded-2xl hover:bg-red-700 transition-colors"
                 >
                   Home
                 </Link>

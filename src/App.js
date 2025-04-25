@@ -7,13 +7,13 @@ import Main from "./MainPage/Main";
 import MoveImage from "./Layouts/MoveImage";
 import Home from "./Layouts/Home";
 import OurService from "./Layouts/OurService";
-import Product from "./ProductPage/Product";
 import CartPage from "./Cart/CartPage";
 import { CartProvider } from "./Cart/CartContext";
 import ProductFeaturePage from "./ProductPage/ProductCard";
 import ThankYouPage from "./Cart/ThankYouPage";
 import Success from "./Layouts/Success";
 import Testimonial from "./Layouts/Testimonial";
+
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
               <Route path="/testimonial" element={<Testimonial />} />
               
               <Route path="/service" element={<OurService />} />
-              <Route path="/ourProduct" element={<Product />} />
+         
               <Route path="/ProductCard" element={<ProductFeaturePage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/thank-you" element={<ThankYouPage />} />

@@ -184,12 +184,20 @@ function Navbar() {
                 >
                   Contact Us
                 </Link>
-                <Link
-                  to="/download"
+                <button
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = "/products.pdf"; // path inside public folder
+                    link.download = "products.pdf";
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                  }}
                   className="text-white bg-red-600 px-4 py-2 rounded-3xl hover:bg-red-700 transition-colors"
                 >
                   Download Pricelist
-                </Link>
+                </button>
+
                 <Link to="/cart" aria-label="View Cart">
                   <div className="relative">
                     <img

@@ -1,16 +1,24 @@
 import React from "react";
 import banner from "../assets/banner.jpg";
+import MobileBanner from "../assets/MobileBanner.png";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Main = () => {
   return (
     <section className="relative max-w-7xl mx-auto font-poppins overflow-hidden">
-      {/* Full-width banner image */}
+      {/* Desktop Banner - hidden on small screens */}
       <img
         src={banner}
         alt="Fireworks Banner"
-        className="w-full h-auto object-cover z-0"
+        className="w-full h-auto object-cover z-0 hidden sm:block"
+      />
+
+      {/* Mobile Banner - visible only on small screens */}
+      <img
+        src={MobileBanner}
+        alt="Fireworks Mobile Banner"
+        className="w-full h-auto object-cover z-0 block sm:hidden"
       />
 
       {/* Bottom content */}
@@ -27,7 +35,8 @@ const Main = () => {
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl mb-8 text-gray-700">
-            Experience the joy and warmth of Diwali with our exclusive collection of decorations, gifts, and more.
+            Experience the joy and warmth of Diwali with our exclusive
+            collection of decorations, gifts, and more.
           </p>
 
           <div className="flex items-center justify-center gap-4">

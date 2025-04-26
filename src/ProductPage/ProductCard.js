@@ -12,7 +12,7 @@ export default function ProductFeaturePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
-  const [inputValues, setInputValues] = useState({}); // Local state for input values
+  const [inputValues, setInputValues] = useState({}); // Store input values
 
   const { cartItems, addToCart, removeFromCart, updateCartItem } = useCart();
 
@@ -33,6 +33,7 @@ export default function ProductFeaturePage() {
     (acc, item) => acc + item.rate * item.qty,
     0
   );
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,12 +71,13 @@ export default function ProductFeaturePage() {
     }
 
     const qty = parseInt(value, 10);
-    if (isNaN(qty) || qty < 0) return;
+    if (isNaN(qty) || qty <= 0) {
+      removeFromCart(product.id);  // Remove the item if quantity is invalid
+      return;
+    }
 
     const cartItem = cartItems.find((item) => item.id === product.id);
-    if (qty === 0) {
-      removeFromCart(product.id);
-    } else if (cartItem) {
+    if (cartItem) {
       updateCartItem(product.id, qty);
     } else {
       addToCart({ ...product, qty });
@@ -91,6 +93,9 @@ export default function ProductFeaturePage() {
         [product.id]: "",
       }));
       removeFromCart(product.id);
+    } else {
+      // If valid quantity, update the cart
+      updateCartItem(product.id, qty);
     }
   };
 
@@ -222,14 +227,14 @@ export default function ProductFeaturePage() {
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
-                    value={getItemQuantity(product.id)}
+                    value={getItemQuantity(product.id)}  // Bind value to the input
                     onChange={(e) =>
                       handleQuantityChange(product, e.target.value)
                     }
-                    onBlur={() => handleInputBlur(product)}
+                    onBlur={() => handleInputBlur(product)}  // Handle blur to save the value
                     className="w-20 text-center border rounded border-black"
                     min="0"
-                    placeholder=""
+                    
                   />
                 </div>
               </motion.div>

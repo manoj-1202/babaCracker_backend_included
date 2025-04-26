@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
       const exists = prev.find((item) => item.id === product.id);
       if (exists) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+          item.id === product.id ? { ...item, qty: item.qty } : item
         );
       }
       return [...prev, { ...product, qty: 1 }];

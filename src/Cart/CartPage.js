@@ -22,20 +22,6 @@ export default function CartPage() {
     0
   );
 
-  const handleIncrement = (item) => {
-    updateCartItem(item.id, item.qty + 1);
-  };
-
-  const handleDecrement = (item) => {
-    if (item.qty > 1) {
-      updateCartItem(item.id, item.qty - 1);
-    } else {
-      setLastRemoved({ id: item.id, name: item.name });
-      removeFromCart(item.id);
-      setTimeout(() => setLastRemoved(null), 2000);
-    }
-  };
-
   const handleQuantityChange = (item, value) => {
     const newQty = parseInt(value, 10);
     if (isNaN(newQty) || newQty < 1) {
@@ -74,9 +60,9 @@ export default function CartPage() {
   const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile;
 
   return (
-    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen ">
+    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto relative">
-        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center ">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center">
           Your Shopping Cart
         </h2>
 
@@ -87,17 +73,11 @@ export default function CartPage() {
         )}
 
         <p className="text-center mb-4">
-          <Link
-            to="/ProductCard"
-            className="text-blue-600 text-base sm:text-lg font-semibold hover:underline"
-          >
+          <Link to="/ProductCard" className="text-blue-600 text-base sm:text-lg font-semibold hover:underline">
             Products
           </Link>{" "}
           |{" "}
-          <Link
-            to="/cart"
-            className="text-gray-600 text-base sm:text-lg hover:underline"
-          >
+          <Link to="/cart" className="text-gray-600 text-base sm:text-lg hover:underline">
             Cart
           </Link>
         </p>
@@ -109,8 +89,8 @@ export default function CartPage() {
         ) : (
           <>
             {/* Table for medium and larger screens */}
-            <div className="hidden sm:block w-full mt-5 ">
-              <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_80px] gap-2 sm:gap-4 font-semibold text-gray-700 bg-gray-100 p-3 sm:p-4 rounded-t-md ">
+            <div className="hidden sm:block w-full mt-5">
+              <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_80px] gap-2 sm:gap-4 font-semibold text-gray-700 bg-gray-100 p-3 sm:p-4 rounded-t-md">
                 <div>S.No</div>
                 <div>Product Name</div>
                 <div>Rate (₹)</div>
@@ -127,28 +107,14 @@ export default function CartPage() {
                   <div>{index + 1}</div>
                   <div className="font-semibold text-gray-800">{item.name}</div>
                   <div className="text-gray-700">₹{item.rate}</div>
-                  <div className="flex items-center gap-2 border rounded px-2 py-1">
-                    <button
-                      className="text-base sm:text-lg font-bold text-gray-700 px-1 sm:px-2"
-                      onClick={() => handleIncrement(item)}
-                    >
-                      +
-                    </button>
+                  <div>
                     <input
                       type="number"
                       value={item.qty}
-                      onChange={(e) =>
-                        handleQuantityChange(item, e.target.value)
-                      }
-                      className="w-10 sm:w-12 text-center text-gray-800 font-medium border-none focus:ring-0"
-                      min="0"
+                      onChange={(e) => handleQuantityChange(item, e.target.value)}
+                      className="w-14 sm:w-16 text-center text-gray-800 font-medium border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                      min="1"
                     />
-                    <button
-                      className="text-base sm:text-lg font-bold text-gray-700 px-1 sm:px-2"
-                      onClick={() => handleDecrement(item)}
-                    >
-                      −
-                    </button>
                   </div>
                   <div className="text-blue-600 font-semibold">
                     ₹{item.rate * item.qty}
@@ -189,33 +155,17 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-gray-700 text-sm">Quantity:</span>
-                    <div className="flex items-center gap-2 border rounded px-2 py-1">
-                      <button
-                        className="text-base font-bold text-gray-700 px-1"
-                        onClick={() => handleDecrement(item)}
-                      >
-                        −
-                      </button>
-                      <input
-                        type="number"
-                        value={item.qty}
-                        onChange={(e) =>
-                          handleQuantityChange(item, e.target.value)
-                        }
-                        className="w-10 text-center text-gray-800 font-medium border-none focus:ring-0"
-                        min="1"
-                      />
-                      <button
-                        className="text-base font-bold text-gray-700 px-1"
-                        onClick={() => handleIncrement(item)}
-                      >
-                        +
-                      </button>
-                    </div>
+                    <input
+                      type="number"
+                      value={item.qty}
+                      onChange={(e) => handleQuantityChange(item, e.target.value)}
+                      className="w-14 text-center text-gray-800 font-medium border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                      min="1"
+                    />
                   </div>
                   <div className="flex justify-between text-blue-600 font-semibold mt-2">
                     <span>Total:</span>
-                    <span>₹ {item.rate * item.qty}</span>
+                    <span>₹{item.rate * item.qty}</span>
                   </div>
                 </div>
               ))}
@@ -223,7 +173,7 @@ export default function CartPage() {
 
             {/* Summary Section */}
             <div className="mt-6 sm:mt-10 border-t pt-4 sm:pt-6 flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="text-base sm:text-lg font-bold">
                   Total Items:{" "}
                   <span className="text-blue-600 font-bold">{totalItems}</span>
@@ -249,9 +199,7 @@ export default function CartPage() {
                   type="tel"
                   placeholder="Enter your mobile number"
                   value={mobile}
-                  onChange={(e) =>
-                    setMobile(e.target.value.replace(/[^0-9]/g, ""))
-                  }
+                  onChange={(e) => setMobile(e.target.value.replace(/[^0-9]/g, ""))}
                   className="p-2 border rounded shadow bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   pattern="[0-9]{10}"
                   maxLength="10"

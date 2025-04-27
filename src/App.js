@@ -13,6 +13,7 @@ import ProductFeaturePage from "./ProductPage/ProductCard";
 import ThankYouPage from "./Cart/ThankYouPage";
 import Success from "./Layouts/Success";
 import Testimonial from "./Layouts/Testimonial";
+import DownloadCard from "./ProductPage/DownloadCard";
 
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
          
               <Route path="/ProductCard" element={<ProductFeaturePage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/downloadCart" element={<DownloadCard />} />
+
               <Route path="/thank-you" element={<ThankYouPage />} />
             </Routes>
           </div>

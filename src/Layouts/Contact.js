@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import { Mail, Phone, Contact } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ContactPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <div className="px-4 py-16 max-w-7xl mx-auto">
+    <div className="min-h-screen px-4 py-16 max-w-7xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:px-10">
         {/* Left - Contact Info */}
         <motion.div

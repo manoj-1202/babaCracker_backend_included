@@ -3,6 +3,7 @@ import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import newproduct from "../assets/newproduct.png";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, updateCartItem, totalItems } = useCart();
@@ -24,14 +25,13 @@ export default function CartPage() {
 
   const handleQuantityChange = (item, value) => {
     const newQty = parseInt(value, 10);
-    if (isNaN(newQty) || newQty < 1) {
-      setLastRemoved({ id: item.id, name: item.name });
-      removeFromCart(item.id);
-      setTimeout(() => setLastRemoved(null), 2000);
+    if (isNaN(newQty) || newQty < "") {
+      updateCartItem(item.id, "");
     } else {
       updateCartItem(item.id, newQty);
     }
   };
+  
 
   const handleRemoveFromCart = (item) => {
     setLastRemoved({ id: item.id, name: item.name });
@@ -60,11 +60,24 @@ export default function CartPage() {
   const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile;
 
   return (
-    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto relative">
+    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto relative">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center">
           Your Shopping Cart
         </h2>
+
+        {/* product cart icon */}
+        <div className="fixed bottom-4 inset-x-0 z-50 sm:bottom-6 flex justify-end pr-4 sm:pr-6">
+          <Link to="/productCard">
+            <div className=" rounded-full">
+              <img
+                src={newproduct}
+                alt="New Product"
+                className="w-10 h-10 object-contain"
+              />
+            </div>
+          </Link>
+        </div>
 
         {lastRemoved && (
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs sm:text-sm px-2 py-1 rounded shadow z-10 animate-pulse">
@@ -73,11 +86,17 @@ export default function CartPage() {
         )}
 
         <p className="text-center mb-4">
-          <Link to="/ProductCard" className="text-blue-600 text-base sm:text-lg font-semibold hover:underline">
+          <Link
+            to="/ProductCard"
+            className="text-blue-600 text-base sm:text-lg font-semibold hover:underline"
+          >
             Products
           </Link>{" "}
           |{" "}
-          <Link to="/cart" className="text-gray-600 text-base sm:text-lg hover:underline">
+          <Link
+            to="/cart"
+            className="text-gray-600 text-base sm:text-lg hover:underline"
+          >
             Cart
           </Link>
         </p>
@@ -111,7 +130,9 @@ export default function CartPage() {
                     <input
                       type="number"
                       value={item.qty}
-                      onChange={(e) => handleQuantityChange(item, e.target.value)}
+                      onChange={(e) =>
+                        handleQuantityChange(item, e.target.value)
+                      }
                       className="w-14 sm:w-16 text-center text-gray-800 font-medium border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       min="1"
                     />
@@ -158,7 +179,9 @@ export default function CartPage() {
                     <input
                       type="number"
                       value={item.qty}
-                      onChange={(e) => handleQuantityChange(item, e.target.value)}
+                      onChange={(e) =>
+                        handleQuantityChange(item, e.target.value)
+                      }
                       className="w-14 text-center text-gray-800 font-medium border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       min="1"
                     />
@@ -199,7 +222,9 @@ export default function CartPage() {
                   type="tel"
                   placeholder="Enter your mobile number"
                   value={mobile}
-                  onChange={(e) => setMobile(e.target.value.replace(/[^0-9]/g, ""))}
+                  onChange={(e) =>
+                    setMobile(e.target.value.replace(/[^0-9]/g, ""))
+                  }
                   className="p-2 border rounded shadow bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   pattern="[0-9]{10}"
                   maxLength="10"

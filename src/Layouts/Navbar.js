@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "../assets/logo.png";
@@ -7,7 +7,7 @@ import { useCart } from "../Cart/CartContext";
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
+
   const { cartItems } = useCart();
 
   return (
@@ -97,7 +97,7 @@ function Navbar() {
                     { label: "Our Pricelist", to: "/productCard" },
                     { label: "About Us", to: "/about" },
                     { label: "Contact Us", to: "/contact" },
-                    { label: "Download Pricelist", to: "/download" },
+                    { label: "Download Pricelist", to: "/downloadCart" },
                   ].map((item, index) => (
                     <li key={index} className="w-full flex justify-center">
                       <Link
@@ -184,7 +184,8 @@ function Navbar() {
                 >
                   Contact Us
                 </Link>
-                <button
+
+                {/* <button
                   onClick={() => {
                     const link = document.createElement("a");
                     link.href = "/products.pdf"; // path inside public folder
@@ -196,7 +197,14 @@ function Navbar() {
                   className="text-white bg-red-600 px-4 py-2 rounded-3xl hover:bg-red-700 transition-colors"
                 >
                   Download Pricelist
-                </button>
+                </button> */}
+
+                <Link
+                  to="/downloadCart"
+                  className="text-white bg-red-600 px-4 py-2 rounded-3xl hover:bg-red-700 transition-colors"
+                >
+                   Download Pricelist
+                </Link>
 
                 <Link to="/cart" aria-label="View Cart">
                   <div className="relative">

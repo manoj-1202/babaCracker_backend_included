@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const Main = () => {
   return (
-    <section className="relative max-w-7xl mx-auto font-poppins overflow-hidden">
+    <section className="relative max-w-7xl  mx-auto font-poppins overflow-hidden">
       {/* Desktop Banner - hidden on small screens */}
       <img
         src={banner}
@@ -47,10 +47,10 @@ const Main = () => {
               Shop Now
             </Link>
             <Link
-              to="/about"
+              to="/downloadCart"
               className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white px-8 py-2 text-lg rounded-md font-semibold transition duration-300"
             >
-              Learn More
+              Download priceList
             </Link>
           </div>
         </motion.div>

@@ -1,4 +1,6 @@
 import {useEffect} from "react";
+import newproduct from "../assets/newproduct.png";
+import { Link } from "react-router-dom";
 import page1 from "../assets/products/page1.jpg";
 import page2 from "../assets/products/page2.jpg";
 import page3 from "../assets/products/page3.jpg";
@@ -32,7 +34,22 @@ const DownloadCard = () => {
 
   return (
     <div className=" max-w-7xl mx-auto">
+
     <div className="min-h-screen  bg-gray-100 py-10 px-4">
+
+        {/* product cart icon */}
+        <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
+        <Link to="/productCard">
+          <div className="rounded-full animate-pulse">
+            <img
+              src={newproduct}
+              alt="New Product"
+              className="w-12 h-12 object-contain"
+            />
+          </div>
+        </Link>
+      </div>
+
       <h2 className="text-3xl font-bold text-center mb-4">
         OUR PRODUCTS CATALOG
       </h2>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import aboutBanner from "../assets/aboutBanner.png";
 import MoveImage from "./MoveImage";
 import { Link } from "react-router-dom";
+import newproduct from "../assets/newproduct.png";
 
 const About = () => {
 
@@ -12,6 +13,18 @@ const About = () => {
 
   return (
     <div className="min-h-screen  bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        {/* product cart icon */}
+        <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
+        <Link to="/productCard">
+          <div className="rounded-full animate-pulse">
+            <img
+              src={newproduct}
+              alt="New Product"
+              className="w-12 h-12 object-contain"
+            />
+          </div>
+        </Link>
+      </div>
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8">
         {/* Left Section: Text and Button */}
         <motion.div

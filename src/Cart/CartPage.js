@@ -31,7 +31,6 @@ export default function CartPage() {
       updateCartItem(item.id, newQty);
     }
   };
-  
 
   const handleRemoveFromCart = (item) => {
     setLastRemoved({ id: item.id, name: item.name });
@@ -67,7 +66,7 @@ export default function CartPage() {
         </h2>
 
         {/* product cart icon */}
-        <div className="fixed bottom-4 inset-x-0 z-50 sm:bottom-6 flex justify-end pr-4 sm:pr-6">
+        <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
           <Link to="/productCard">
             <div className=" rounded-full">
               <img

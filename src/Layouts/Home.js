@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div>
       {/* product cart icon */}
-      <div className="fixed bottom-4 inset-x-0 z-50 sm:bottom-6 flex justify-end pr-4 sm:pr-6">
+      <div className="fixed bottom-10 right-4 z-50 sm:bottom-8">
         <Link to="/productCard">
           <div className="rounded-full animate-pulse">
             <img
@@ -25,18 +25,16 @@ const Home = () => {
         </Link>
       </div>
 
-      <div className="fixed bottom-4 inset-x-0 z-50 hidden md:flex justify-start pr-4">
-  <Link to="/productCard">
-    <div className="rounded-full">
-      <img
-        src={download}
-        alt="New Product"
-        className="w-[200px] h-[400px] object-contain"
-      />
-    </div>
-  </Link>
-</div>
-
+      {/* Download GIF on left side for medium and above screens */}
+      <div className="fixed bottom-4 left-4 z-50 hidden md:block">
+        <div className="rounded-full">
+          <img
+            src={download}
+            alt="Download"
+            className="w-[200px] h-[400px] object-contain"
+          />
+        </div>
+      </div>
 
       <Main />
       <MoveImage />

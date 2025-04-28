@@ -28,12 +28,12 @@ const Home = () => {
       </div>
 
       {/* WhatsApp and Call Buttons */}
-      <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-4">
+      <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
         <a href="tel:+9445280054" className="rounded-full animate-pulse">
           <img
             src={phonecall}
             alt="Call Now"
-            className="w-8 h-8 sm:w-12 sm:h-12 object-contain"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
           />
         </a>
         <a
@@ -45,7 +45,7 @@ const Home = () => {
           <img
             src={whatsapp}
             alt="WhatsApp"
-            className="w-8 h-8 sm:w-12 sm:h-12 object-contain"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
           />
         </a>
       </div>

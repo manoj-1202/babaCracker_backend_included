@@ -5,8 +5,8 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 const Footer = () => {
   return (
     
-    <footer className="max-w-7xl mx-auto bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-300 text-black py-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+    <footer className=" bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-300 text-black py-10">
+      <div className="px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Company Info */}
         <div>
           <h2 className="font-bold text-xl mb-2">

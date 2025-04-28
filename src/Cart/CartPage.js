@@ -5,6 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import shopNow from "../assets/shopNow.png";
+import phonecall from "../assets/phone-call.png";
+import whatsapp from "../assets/whatsapp.png";
+
 
 export default function CartPage() {
   const { cartItems, removeFromCart, updateCartItem, totalItems } = useCart();
@@ -60,7 +63,7 @@ export default function CartPage() {
   const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile;
 
   return (
-    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
+    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen ">
       <div className="max-w-5xl mx-auto relative">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center">
           Your Shopping Cart
@@ -79,6 +82,29 @@ export default function CartPage() {
           </Link>
         </div>
 
+           {/* WhatsApp and Call Buttons */}
+      <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
+        <a href="tel:+9445280054" className="rounded-full animate-pulse">
+          <img
+            src={phonecall}
+            alt="Call Now"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+        <a
+          href="https://api.whatsapp.com/send?phone=9444813377"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full animate-pulse"
+        >
+          <img
+            src={whatsapp}
+            alt="WhatsApp"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+      </div>
+
         {lastRemoved && (
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs sm:text-sm px-2 py-1 rounded shadow z-10 animate-pulse">
             {lastRemoved.name} removed!
@@ -90,7 +116,7 @@ export default function CartPage() {
             to="/ProductCard"
             className="text-red-600 text-base sm:text-lg font-semibold hover:underline"
           >
-            Products
+            <span className="text-xl">←</span> Products
           </Link>{" "}
           |{" "}
           <Link

@@ -21,7 +21,7 @@ function Navbar() {
       </div>
 
       {/* Navbar */}
-      <nav className="max-w-7xl mx-auto  bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400  text-black">
+      <nav className=" bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400  text-black">
         <div className=" px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-auto md:h-28">
             {/* Mobile View */}

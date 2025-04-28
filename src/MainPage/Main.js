@@ -148,7 +148,9 @@ const Main = () => {
   ).toFixed(2);
 
   return (
-    <section className="relative max-w-7xl mx-auto font-poppins overflow-hidden">
+    <section className="relative  font-poppins overflow-hidden">
+
+      
       {/* Desktop Banner */}
       <img
         src={banner}
@@ -162,6 +164,7 @@ const Main = () => {
         alt="Fireworks Mobile Banner"
         className="w-full h-auto object-cover z-0 block sm:hidden"
       />
+     
 
       {/* Banner Bottom Content */}
       <div className="relative z-10 flex flex-col items-center justify-center py-12 px-6 md:px-20 bg-gray-100">

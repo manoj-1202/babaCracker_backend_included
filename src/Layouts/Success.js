@@ -12,7 +12,7 @@ const Success = () => {
   return (
     <>
       {/* Our Reason For Success */}
-      <div className="relative max-w-7xl mx-auto text-white py-12 px-4 md:px-10 text-center mt-10 overflow-hidden bg-gray-100">
+      <div className="relative  text-white py-12 px-4 md:px-10 text-center mt-10 overflow-hidden bg-gray-100">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,7 +33,7 @@ const Success = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
             {[
               {
                 logo: happy,
@@ -78,7 +78,7 @@ const Success = () => {
       </div>
 
       {/* Why Choose Us Section */}
-      <div className="max-w-7xl mx-auto bg-white text-black py-5 px-4 md:px-10 text-center">
+      <div className=" bg-white text-black py-5 px-4 md:px-10 text-center">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -100,7 +100,7 @@ const Success = () => {
           our transport fleet helps us deliver them affordably.
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 ">
           {/* Card 1 */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}

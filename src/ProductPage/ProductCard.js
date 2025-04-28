@@ -4,6 +4,8 @@ import { productData } from "./ProductData";
 import { useCart } from "../Cart/CartContext";
 import { Link } from "react-router-dom";
 import cart from "../assets/cart.png";
+import phonecall from "../assets/phone-call.png";
+import whatsapp from "../assets/whatsapp.png";
 
 const categories = ["All", ...new Set(productData.map((p) => p.category))];
 
@@ -121,7 +123,32 @@ export default function ProductFeaturePage() {
   };
 
   return (
-    <div className="p-4 sm:p-10 max-w-7xl mx-auto min-h-screen bg-gray-50">
+    <div className="p-4 sm:p-10  min-h-screen bg-gray-50">
+
+         {/* WhatsApp and Call Buttons */}
+         <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
+        <a href="tel:+9445280054" className="rounded-full animate-pulse">
+          <img
+            src={phonecall}
+            alt="Call Now"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+        <a
+          href="https://api.whatsapp.com/send?phone=9444813377"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full animate-pulse"
+        >
+          <img
+            src={whatsapp}
+            alt="WhatsApp"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+      </div>
+
+
       <div className="pb-6 text-center">
         <h2 className="text-3xl font-bold text-gray-800">
           Our Products Catalog

@@ -118,7 +118,7 @@ export default function ProductFeaturePage() {
   };
 
   return (
-    <div className="p-4 sm:p-10 max-w-7xl mx-auto min-h-screen bg-gray-50">
+    <div className="p-4 sm:p-10  min-h-screen bg-gray-50">
       <div className="pb-6">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Our Products Catalog

@@ -20,8 +20,8 @@ const OurService = () => {
   };
 
   return (
-    <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 bg-gray-100 overflow-hidden">
-      <div className="relative z-10 max-w-7xl mx-auto">
+    <div className="relative  py-12 px-4 sm:px-6 bg-gray-100 overflow-hidden">
+      <div className="relative z-10 ">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

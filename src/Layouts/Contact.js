@@ -8,7 +8,7 @@ const ContactPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen px-4 py-16 max-w-7xl mx-auto">
+    <div className="min-h-screen px-4 py-16 ">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:px-10">
         {/* Left - Contact Info */}
         <motion.div

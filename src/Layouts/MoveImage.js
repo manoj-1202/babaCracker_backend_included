@@ -60,7 +60,7 @@ const MoveImage = () => {
   const bottomLogos = logos.slice(half);
 
   return (
-    <div className="max-w-7xl mx-auto bg-white py-8 overflow-hidden relative">
+    <div className=" bg-white py-8 overflow-hidden relative">
       <div>
         {/* Heading with fade-in animation */}
         <motion.h2

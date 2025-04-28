@@ -45,7 +45,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-white">
+    <div className=" py-12 px-4 sm:px-6 lg:px-8 bg-white">
       <div>
         {/* Heading and Subheading */}
         <div className="text-center mb-12">

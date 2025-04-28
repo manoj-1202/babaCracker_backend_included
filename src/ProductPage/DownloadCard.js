@@ -1,5 +1,7 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 import shopNow from "../assets/shopNow.png";
+import phonecall from "../assets/phone-call.png";
+import whatsapp from "../assets/whatsapp.png";
 import { Link } from "react-router-dom";
 import page1 from "../assets/products/page1.jpg";
 import page2 from "../assets/products/page2.jpg";
@@ -28,26 +30,46 @@ const DownloadCard = () => {
     document.body.removeChild(link);
   };
 
-   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
-    <div className=" max-w-7xl mx-auto">
-
     <div className="min-h-screen  bg-gray-100 py-10 px-4">
-
-        {/* product cart icon */}
-        <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
+      {/* product cart icon */}
+      <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
         <Link to="/productCard">
           <div className="rounded-full animate-pulse">
             <img
-             src={shopNow}
+              src={shopNow}
               alt="New Product"
-                className="w-32 h-36 object-contain"
+              className="w-32 h-36 object-contain"
             />
           </div>
         </Link>
+      </div>
+
+      {/* WhatsApp and Call Buttons */}
+      <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
+        <a href="tel:+9445280054" className="rounded-full animate-pulse">
+          <img
+            src={phonecall}
+            alt="Call Now"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+        <a
+          href="https://api.whatsapp.com/send?phone=9444813377"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full animate-pulse"
+        >
+          <img
+            src={whatsapp}
+            alt="WhatsApp"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
       </div>
 
       <h2 className="text-3xl font-bold text-center mb-4">
@@ -81,7 +103,6 @@ const DownloadCard = () => {
           </div>
         ))}
       </div>
-    </div>
     </div>
   );
 };

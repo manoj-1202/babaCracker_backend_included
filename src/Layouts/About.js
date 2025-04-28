@@ -4,6 +4,8 @@ import aboutBanner from "../assets/aboutBanner.png";
 import MoveImage from "./MoveImage";
 import { Link } from "react-router-dom";
 import shopNow from "../assets/shopNow.png";
+import phonecall from "../assets/phone-call.png";
+import whatsapp from "../assets/whatsapp.png";
 
 const About = () => {
 
@@ -25,7 +27,31 @@ const About = () => {
           </div>
         </Link>
       </div>
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-8">
+
+         {/* WhatsApp and Call Buttons */}
+         <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
+        <a href="tel:+9445280054" className="rounded-full animate-pulse">
+          <img
+            src={phonecall}
+            alt="Call Now"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+        <a
+          href="https://api.whatsapp.com/send?phone=9444813377"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full animate-pulse"
+        >
+          <img
+            src={whatsapp}
+            alt="WhatsApp"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          />
+        </a>
+      </div>
+
+      <div className=" flex flex-col lg:flex-row items-center gap-8">
         {/* Left Section: Text and Button */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}

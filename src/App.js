@@ -8,12 +8,12 @@ import MoveImage from "./Layouts/MoveImage";
 import Home from "./Layouts/Home";
 import OurService from "./Layouts/OurService";
 import CartPage from "./Cart/CartPage";
-import { CartProvider } from "./Cart/CartContext";
 import ProductFeaturePage from "./ProductPage/ProductCard";
 import ThankYouPage from "./Cart/ThankYouPage";
 import Success from "./Layouts/Success";
 import Testimonial from "./Layouts/Testimonial";
 import DownloadCard from "./ProductPage/DownloadCard";
+import { CartProvider } from "./Cart/CartContext";
 
 
 function App() {
@@ -31,13 +31,10 @@ function App() {
               <Route path="/moveImage" element={<MoveImage />} />
               <Route path="/success" element={<Success />} />
               <Route path="/testimonial" element={<Testimonial />} />
-              
               <Route path="/service" element={<OurService />} />
-         
               <Route path="/ProductCard" element={<ProductFeaturePage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/downloadCart" element={<DownloadCard />} />
-
               <Route path="/thank-you" element={<ThankYouPage />} />
             </Routes>
           </div>

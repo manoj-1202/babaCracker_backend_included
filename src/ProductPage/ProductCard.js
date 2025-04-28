@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { productData } from "./ProductData";
@@ -32,10 +33,12 @@ export default function ProductFeaturePage() {
   }, []);
 
   const totalAmount = useMemo(() => {
-    return cartItems.reduce(
-      (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
-      0
-    ).toFixed(2);
+    return cartItems
+      .reduce(
+        (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
+        0
+      )
+      .toFixed(2);
   }, [cartItems]);
 
   useEffect(() => {
@@ -61,8 +64,20 @@ export default function ProductFeaturePage() {
     return products;
   }, [selectedCategory, searchQuery, sortOrder]);
 
+  // Group products by category when "All" is selected
+  const groupedProducts = useMemo(() => {
+    if (selectedCategory !== "All") return null;
+    const grouped = {};
+    filteredProducts.forEach((product) => {
+      if (!grouped[product.category]) {
+        grouped[product.category] = [];
+      }
+      grouped[product.category].push(product);
+    });
+    return grouped;
+  }, [filteredProducts, selectedCategory]);
+
   const handleQuantityChange = (product, value) => {
-    // Update local input value
     setInputValues((prev) => ({
       ...prev,
       [product.id]: value,
@@ -75,7 +90,7 @@ export default function ProductFeaturePage() {
 
     const qty = parseInt(value, 10);
     if (isNaN(qty) || qty <= 0) {
-      removeFromCart(product.id); // Remove the item if quantity is invalid
+      removeFromCart(product.id);
       return;
     }
 
@@ -97,7 +112,6 @@ export default function ProductFeaturePage() {
       }));
       removeFromCart(product.id);
     } else {
-      // If valid quantity, update the cart
       updateCartItem(product.id, qty);
     }
   };
@@ -123,10 +137,9 @@ export default function ProductFeaturePage() {
   };
 
   return (
-    <div className="p-4 sm:p-10  min-h-screen bg-gray-50">
-
-         {/* WhatsApp and Call Buttons */}
-         <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
+    <div className="p-4 sm:p-10 min-h-screen bg-gray-50">
+      {/* WhatsApp and Call Buttons */}
+      <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
         <a href="tel:+9445280054" className="rounded-full animate-pulse">
           <img
             src={phonecall}
@@ -148,11 +161,18 @@ export default function ProductFeaturePage() {
         </a>
       </div>
 
-
+      {/* Main Catalog Title */}
       <div className="pb-6 text-center">
         <h2 className="text-3xl font-bold text-gray-800">
           Our Products Catalog
         </h2>
+      </div>
+
+      {/* Selected Category Title */}
+      <div className="pb-4 text-center">
+        <h3 className="text-2xl font-semibold text-gray-700">
+          {selectedCategory === "All" ? "All Products" : selectedCategory}
+        </h3>
       </div>
 
       {/* Cart Floating */}
@@ -239,34 +259,79 @@ export default function ProductFeaturePage() {
 
           {/* Product Items */}
           <AnimatePresence>
-            {filteredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="grid grid-cols-[50px_2fr_1fr_1fr_160px] gap-4 border-b p-3 items-center text-sm sm:text-base"
-              >
-                <div>{index + 1}</div>
-                <div className="font-medium">{product.name}</div>
-                <div className="text-red-600">
-                  <span className="line-through">₹{Number(product.actualPrice).toFixed(2)}</span> / ₹{Number(product.ourPrice).toFixed(2)}
+            {selectedCategory === "All" && groupedProducts ? (
+              Object.entries(groupedProducts).map(([category, products], catIndex) => (
+                <div key={category}>
+                  {/* Category Title for Each Group */}
+                  <div className="bg-gray-300 p-3 mt-4 rounded font-bold text-gray-800 text-lg">
+                    {category}
+                  </div>
+                  {products.map((product, index) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className="grid grid-cols-[50px_2fr_1fr_1fr_160px] gap-4 border-b p-3 items-center text-sm sm:text-base"
+                    >
+                      <div>{filteredProducts.indexOf(product) + 1}</div>
+                      <div className="font-medium">{product.name}</div>
+                      <div className="text-red-600">
+                        <span className="line-through">
+                          ₹{Number(product.actualPrice).toFixed(2)}
+                        </span>{" "}
+                        / ₹{Number(product.ourPrice).toFixed(2)}
+                      </div>
+                      <div>{product.per}</div>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          value={getItemQuantity(product.id)}
+                          onChange={(e) => handleQuantityChange(product, e.target.value)}
+                          onBlur={() => handleInputBlur(product)}
+                          className="w-20 text-center border rounded border-black"
+                          min="0"
+                          placeholder="Qty"
+                        />
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-                <div>{product.per}</div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    value={getItemQuantity(product.id)} // Bind value to the input
-                    onChange={(e) => handleQuantityChange(product, e.target.value)}
-                    onBlur={() => handleInputBlur(product)} // Handle blur to save the value
-                    className="w-20 text-center border rounded border-black"
-                    min="0"
-                    placeholder="Qty"
-                  />
-                </div>
-              </motion.div>
-            ))}
+              ))
+            ) : (
+              filteredProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid grid-cols-[50px_2fr_1fr_1fr_160px] gap-4 border-b p-3 items-center text-sm sm:text-base"
+                >
+                  <div>{index + 1}</div>
+                  <div className="font-medium">{product.name}</div>
+                  <div className="text-red-600">
+                    <span className="line-through">
+                      ₹{Number(product.actualPrice).toFixed(2)}
+                    </span>{" "}
+                    / ₹{Number(product.ourPrice).toFixed(2)}
+                  </div>
+                  <div>{product.per}</div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      value={getItemQuantity(product.id)}
+                      onChange={(e) => handleQuantityChange(product, e.target.value)}
+                      onBlur={() => handleInputBlur(product)}
+                      className="w-20 text-center border rounded border-black"
+                      min="0"
+                      placeholder="Qty"
+                    />
+                  </div>
+                </motion.div>
+              ))
+            )}
           </AnimatePresence>
         </div>
       </div>

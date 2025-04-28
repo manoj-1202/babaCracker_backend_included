@@ -4,6 +4,7 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
+    
     <footer className="max-w-7xl mx-auto bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-300 text-black py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Company Info */}
@@ -107,13 +108,13 @@ const Footer = () => {
               <Facebook size={20} />
             </button>
             <button
-              className="bg-yellow-400 border border-black p-2 p-2 rounded-full hover:text-blue-800 transition"
+              className="bg-yellow-400 border border-black p-2 rounded-full hover:text-blue-800 transition"
               aria-label="Instagram"
             >
               <Instagram size={20} />
             </button>
             <button
-              className="bg-yellow-400 border border-black p-2 p-2 rounded-full hover:text-blue-800 transition"
+              className="bg-yellow-400 border border-black p-2  rounded-full hover:text-blue-800 transition"
               aria-label="Twitter"
             >
               <Twitter size={20} />

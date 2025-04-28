@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "../assets/logo.png";
-import cart from "../assets/cart.png";
 import NavCart from "../assets/NavCart.png";
 import { useCart } from "../Cart/CartContext";
 
@@ -13,8 +12,16 @@ function Navbar() {
 
   return (
     <>
+      <div className="bg-red-600 text-white h-14 flex items-center overflow-hidden">
+        <div className="whitespace-nowrap animate-marquee text-xl font-semibold">
+          Baba Crackers! - Purchase Now ! - Make This
+          Diwali Grand with Baba Crackers!  - Diwali Sale - Get Ready to
+          Sparkle with Baba Crackers!
+        </div>
+      </div>
+
       {/* Navbar */}
-      <nav className="max-w-7xl mx-auto  bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 shadow-xl text-black">
+      <nav className="max-w-7xl mx-auto  bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400  text-black">
         <div className=" px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-auto md:h-28">
             {/* Mobile View */}
@@ -154,9 +161,9 @@ function Navbar() {
                     Baba Crackers
                   </h1>
                   <div className="text-blue-800">
-                  <a href="tel:+9445280054">Contact Number: 9445280054</a>
-                  <br />
-                  <a href="tel:+9444813377">Whatsapp Number: 9444813377</a>
+                    <a href="tel:+9445280054">Contact Number: 9445280054</a>
+                    <br />
+                    <a href="tel:+9444813377">Whatsapp Number: 9444813377</a>
                   </div>
                 </div>
               </div>

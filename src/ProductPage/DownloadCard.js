@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import newproduct from "../assets/newproduct.png";
+import shopNow from "../assets/shopNow.png";
 import { Link } from "react-router-dom";
 import page1 from "../assets/products/page1.jpg";
 import page2 from "../assets/products/page2.jpg";
@@ -42,9 +42,9 @@ const DownloadCard = () => {
         <Link to="/productCard">
           <div className="rounded-full animate-pulse">
             <img
-              src={newproduct}
+             src={shopNow}
               alt="New Product"
-              className="w-12 h-12 object-contain"
+                className="w-32 h-36 object-contain"
             />
           </div>
         </Link>

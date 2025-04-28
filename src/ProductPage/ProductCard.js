@@ -130,7 +130,7 @@ export default function ProductFeaturePage() {
       {/* Cart Floating */}
       <div className="fixed bottom-4 inset-x-0 z-50 sm:bottom-6 flex justify-center">
         <Link to="/cart">
-          <div className="relative flex items-center gap-3 bg-blue-600 text-white font-semibold rounded-full px-4 py-2 shadow-lg">
+          <div className="relative flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full px-4 py-2 shadow-lg">
             <div className="relative">
               <img src={cart} alt="Cart" className="w-8 h-8 sm:w-10 sm:h-10" />
               {cartItems.length > 0 && (
@@ -222,7 +222,7 @@ export default function ProductFeaturePage() {
               >
                 <div>{index + 1}</div>
                 <div className="font-medium">{product.name}</div>
-                <div>₹{product.rate}</div>
+                <div className="text-red-600">₹{product.rate}</div>
                 <div>{product.per}</div>
                 <div className="flex items-center gap-2">
                   <input
@@ -234,6 +234,7 @@ export default function ProductFeaturePage() {
                     onBlur={() => handleInputBlur(product)}  // Handle blur to save the value
                     className="w-20 text-center border rounded border-black"
                     min="0"
+                    placeholder="Qty"
                     
                   />
                 </div>

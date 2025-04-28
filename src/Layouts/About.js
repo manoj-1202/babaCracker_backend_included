@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import aboutBanner from "../assets/aboutBanner.png";
 import MoveImage from "./MoveImage";
 import { Link } from "react-router-dom";
-import newproduct from "../assets/newproduct.png";
+import shopNow from "../assets/shopNow.png";
 
 const About = () => {
 
@@ -18,9 +18,9 @@ const About = () => {
         <Link to="/productCard">
           <div className="rounded-full animate-pulse">
             <img
-              src={newproduct}
+               src={shopNow}
               alt="New Product"
-              className="w-12 h-12 object-contain"
+           className="w-32 h-36 object-contain"
             />
           </div>
         </Link>

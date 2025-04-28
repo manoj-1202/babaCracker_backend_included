@@ -4,11 +4,11 @@ import { Facebook, Instagram, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="max-w-7xl mx-auto bg-yellow-400 text-black py-10">
+    <footer className="max-w-7xl mx-auto bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-300 text-black py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Company Info */}
         <div>
-          <h2 className="font-bold text-lg mb-2">
+          <h2 className="font-bold text-xl mb-2">
             CrackersShope | Wholesale Cracker Dealers
           </h2>
           <p className="text-sm leading-relaxed">
@@ -43,7 +43,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                to="/"
+                to="/testimonial"
                 className="hover:text-blue-800"
                 onClick={() => window.scrollTo(0, 0)}
               >
@@ -125,7 +125,7 @@ const Footer = () => {
       {/* Bottom Line */}
       <div className="mt-8 text-center text-sm text-black">
         © {new Date().getFullYear()} Baba Crackers. All rights reserved.
-        <p className="mt-1">@ S Cube Innovation</p>
+        <p className="mt-1">@ Turmeric Tech Solutions</p>
       </div>
     </footer>
   );

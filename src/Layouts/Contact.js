@@ -28,24 +28,25 @@ const ContactPage = () => {
           <div className="flex items-start gap-4 mb-4">
             <Mail className="text-purple-800 w-6 h-6 mt-1 shrink-0" />
             <p className="text-sm sm:text-base text-gray-700">
-              Babacrackers03@gmail.com, <br />
-              info@Babacrackers.in
+            jais1829@gmail.com
             </p>
           </div>
 
           <div className="flex items-start gap-4 mb-4">
             <Phone className="text-purple-800 w-6 h-6 mt-1 shrink-0" />
             <p className="text-sm sm:text-base text-gray-700">
-              8072789313, 7010277216, 9042502134
+            Contact Number : 9445280054 <br/>
+            Whatsapp Number : 9444813377
             </p>
           </div>
 
           <div className="flex items-start gap-4">
             <Contact className="text-purple-800 w-6 h-6 mt-1 shrink-0" />
             <p className="text-sm sm:text-base text-gray-700">
-              No 2/242 B, Sivakasi to Srivilliputhur Main Road,
+            2/258-4 Alangulm to Sivakasi Main Road,
+            
               <br />
-              T.Managaserii, Sivakasi
+              Kallamanayakarpatti -626131
             </p>
           </div>
         </motion.div>

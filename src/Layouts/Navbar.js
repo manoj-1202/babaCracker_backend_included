@@ -1,8 +1,9 @@
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Logo from "../assets/logo.png";
 import cart from "../assets/cart.png";
+import NavCart from "../assets/NavCart.png";
 import { useCart } from "../Cart/CartContext";
 
 function Navbar() {
@@ -13,7 +14,7 @@ function Navbar() {
   return (
     <>
       {/* Navbar */}
-      <nav className="max-w-7xl mx-auto  bg-gray-200 shadow-xl text-black">
+      <nav className="max-w-7xl mx-auto  bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 shadow-xl text-black">
         <div className=" px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between h-auto md:h-28">
             {/* Mobile View */}
@@ -27,12 +28,13 @@ function Navbar() {
                     className="h-16 object-contain transition-transform duration-300 hover:scale-105"
                   />
                 </Link>
-                <h1 className="text-3xl font-bold text-red-600 mt-2">
+                <h1 className="text-3xl font-bold text-red-700 mt-2">
                   Baba Crackers
                 </h1>
                 <div className="text-center text-blue-800 mt-2">
-                  <p>XXXXXXX - 8754821960</p>
-                  <p>YYYYYYY - 8675006166</p>
+                  <a href="tel:+9445280054">Contact Number: 9445280054</a>
+                  <br />
+                  <a href="tel:+9444813377">Whatsapp Number: 9444813377</a>
                 </div>
               </div>
 
@@ -53,9 +55,9 @@ function Navbar() {
                 <Link to="/cart" aria-label="View Cart">
                   <div className="relative">
                     <img
-                      src={cart}
+                      src={NavCart}
                       alt="Cart"
-                      className="w-8 h-8 object-contain"
+                      className="w-10 h-10 object-contain"
                     />
                     {cartItems.length > 0 && (
                       <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -69,7 +71,7 @@ function Navbar() {
 
             {/* Dropdown Menu for Mobile */}
             <div
-              className={`w-full backdrop-blur-md bg-white/30 shadow-2xl transform transition-transform duration-500 ease-in-out z-50 md:hidden absolute top-0 left-0 ${
+              className={`w-full backdrop-blur-md bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 shadow-2xl transform transition-transform duration-500 ease-in-out z-50 md:hidden absolute top-0 left-0 ${
                 isMobileMenuOpen ? "translate-y-0" : "-translate-y-full"
               }`}
             >
@@ -78,7 +80,7 @@ function Navbar() {
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
                   <img src={Logo} alt="Logo" className="h-16 object-contain" />
                 </Link>
-                <h1 className="text-red-600 font-bold text-xl">
+                <h1 className="text-red-700 font-bold text-xl">
                   Baba Crackers
                 </h1>
                 <button onClick={() => setIsMobileMenuOpen(false)}>
@@ -94,7 +96,7 @@ function Navbar() {
                 <ul className="flex flex-col gap-6 text-lg font-semibold text-black w-full items-center">
                   {[
                     { label: "Home", to: "/" },
-                    { label: "Our Pricelist", to: "/productCard" },
+                    { label: "Purchase Now", to: "/productCard" },
                     { label: "About Us", to: "/about" },
                     { label: "Contact Us", to: "/contact" },
                     { label: "Download Pricelist", to: "/downloadCart" },
@@ -119,7 +121,7 @@ function Navbar() {
                     >
                       <div className="relative">
                         <img
-                          src={cart}
+                          src={NavCart}
                           alt="Cart"
                           className="w-10 h-10 object-contain"
                         />
@@ -148,12 +150,13 @@ function Navbar() {
                   />
                 </Link>
                 <div className="ml-4">
-                  <h1 className="text-3xl font-bold text-red-600">
+                  <h1 className="text-3xl font-bold text-red-700">
                     Baba Crackers
                   </h1>
                   <div className="text-blue-800">
-                    <p>XXXXXXX - 8754821960</p>
-                    <p>YYYYYYY - 8675006166</p>
+                  <a href="tel:+9445280054">Contact Number: 9445280054</a>
+                  <br />
+                  <a href="tel:+9444813377">Whatsapp Number: 9444813377</a>
                   </div>
                 </div>
               </div>
@@ -176,7 +179,7 @@ function Navbar() {
                   to="/productCard"
                   className="text-white bg-red-600 px-4 py-2 rounded-3xl hover:bg-red-700 transition-colors"
                 >
-                  Our Pricelist
+                  Purchase Now
                 </Link>
                 <Link
                   to="/contact"
@@ -203,15 +206,15 @@ function Navbar() {
                   to="/downloadCart"
                   className="text-white bg-red-600 px-4 py-2 rounded-3xl hover:bg-red-700 transition-colors"
                 >
-                   Download Pricelist
+                  Download Pricelist
                 </Link>
 
                 <Link to="/cart" aria-label="View Cart">
                   <div className="relative">
                     <img
-                      src={cart}
+                      src={NavCart}
                       alt="Cart"
-                      className="w-10 h-10 object-contain"
+                      className="w-12 h-12 object-contain"
                     />
                     {cartItems.length > 0 && (
                       <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">

@@ -21,39 +21,40 @@ const Testimonial = () => {
     {
       name: "Sri Ram",
       review:
-        "The Diwali products I purchased were of excellent quality and added a festive touch to my celebrations. Highly recommend!",
-        avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=SaraPatel",
+        "Best quality crackers at affordable prices ,I have been buying from Baba Crackers for 5 years now ,they never disappoint with their fantastic variety and service",
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=SaraPatel",
     },
     {
       name: "Manohar",
       review:
-        "I was impressed by the prompt delivery and beautiful packaging of the Diwali gifts I ordered. Will definitely be a returning customer!",
-        avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=RajeshMehta",
+        "Baba Crackers made our Diwali truly magical Their fireworks are colorful, safe, and absolutely thrilling, Thank you for lighting up our celebrations beautifully",
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=RajeshMehta",
     },
     {
       name: "Priya",
       review:
         "The Diwali decorations I bought from here were stunning and received many compliments from my guests. Thank you for making my Diwali special!",
-        avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=PriyaSingh",
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=PriyaSingh",
     },
     {
       name: "Sankar",
       review:
-        "I loved the variety of traditional sweets available for Diwali. They were delicious and authentic, just like homemade!",
-        avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=AmitShah",
+       "We loved the dazzling sky shots and beautiful flower pots, Our kids enjoyed every moment, all thanks to BabaCrackers",
+      avatar: "https://api.dicebear.com/9.x/adventurer/svg?seed=AmitShah",
     },
   ];
 
   return (
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 bg-white">
-      <div >
+      <div>
         {/* Heading and Subheading */}
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
             Testimonials
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Read what our customers have to say about their Diwali experience with us.
+            Read what our customers have to say about their Diwali experience
+            with us.
           </p>
         </div>
 

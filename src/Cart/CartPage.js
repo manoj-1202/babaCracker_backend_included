@@ -3,7 +3,7 @@ import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import newproduct from "../assets/newproduct.png";
+import shopNow from "../assets/shopNow.png";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, updateCartItem, totalItems } = useCart();
@@ -70,9 +70,9 @@ export default function CartPage() {
           <Link to="/productCard">
             <div className=" rounded-full">
               <img
-                src={newproduct}
+                src={shopNow}
                 alt="New Product"
-                className="w-10 h-10 object-contain"
+                 className="w-32 h-36 object-contain"
               />
             </div>
           </Link>
@@ -171,7 +171,7 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between text-gray-700 text-sm">
                     <span>Rate:</span>
-                    <span>₹{item.rate}</span>
+                    <span >₹{item.rate}</span>
                   </div>
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-gray-700 text-sm">Quantity:</span>

@@ -5,8 +5,8 @@ import ContactPage from "./Contact";
 import OurService from "./OurService";
 import Success from "./Success";
 import Testimonial from "./Testimonial";
-import newproduct from "../assets/newproduct.png";
-import download from "../assets/download.gif";
+import shopNow from "../assets/shopNow.png";
+
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -17,24 +17,15 @@ const Home = () => {
         <Link to="/productCard">
           <div className="rounded-full animate-pulse">
             <img
-              src={newproduct}
+              src={shopNow}
               alt="New Product"
-              className="w-12 h-12 object-contain"
+              className="w-32 h-36 object-contain"
             />
           </div>
         </Link>
       </div>
 
-      {/* Download GIF on left side for medium and above screens */}
-      <div className="fixed bottom-4 left-4 z-50 hidden md:block">
-        <div className="rounded-full">
-          <img
-            src={download}
-            alt="Download"
-            className="w-[200px] h-[400px] object-contain"
-          />
-        </div>
-      </div>
+     
 
       <Main />
       <MoveImage />

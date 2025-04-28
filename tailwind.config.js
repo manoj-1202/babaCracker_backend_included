@@ -10,7 +10,7 @@ module.exports = {
         poppins: ['Poppins', 'sans-serif'],
       },
       animation: {
-        marquee: "marquee 50s linear infinite",
+        marquee: "marquee 30s linear infinite",
       },
       keyframes: {
         marquee: {

@@ -14,12 +14,12 @@ module.exports = {
       },
       keyframes: {
         marquee: {
-          "0%": { transform: "translateX(100%)" },  // Start off-screen right
-          "100%": { transform: "translateX(-100%)" }, // End off-screen left
+          "0%": { transform: "translateX(100%)" },  
+          "100%": { transform: "translateX(-100%)" }, 
         },
       },
     },
   },
-  
+
   plugins: [],
 };

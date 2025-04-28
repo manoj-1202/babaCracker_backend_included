@@ -21,7 +21,7 @@ app.post("/place-order", async (req, res) => {
       service: "gmail",
       auth: {
         user: "ttsapplications2025@gmail.com", // Gmail id
-        pass: "djor ksrg pkzt zznd", //   App Password
+        pass: "djor ksrg pkzt zznd", // App Password
       },
     });
 
@@ -31,9 +31,9 @@ app.post("/place-order", async (req, res) => {
           `<tr>
             <td>${index + 1}</td>
             <td>${item.name}</td>
-            <td>${item.rate}</td>
+            <td><s>₹${Number(item.actualPrice).toFixed(2)}</s> / ₹${Number(item.ourPrice).toFixed(2)}</td>
             <td>${item.qty}</td>
-            <td>${item.rate * item.qty}</td>
+            <td>₹${(Number(item.ourPrice) * Number(item.qty)).toFixed(2)}</td>
           </tr>`
       )
       .join("");
@@ -48,7 +48,7 @@ app.post("/place-order", async (req, res) => {
           <tr>
             <th>S.No</th>
             <th>Product</th>
-            <th>Rate</th>
+            <th>Actual Price / Our Price</th>
             <th>Qty</th>
             <th>Total</th>
           </tr>
@@ -57,7 +57,7 @@ app.post("/place-order", async (req, res) => {
           ${itemList}
         </tbody>
       </table>
-      <p><strong>Total Amount:</strong> ₹${totalAmount}</p>
+      <p><strong>Total Amount:</strong> ₹${Number(totalAmount).toFixed(2)}</p>
     `;
 
     const mailOptions = {

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,13 +20,13 @@ export default function CartPage() {
   }, []);
 
   const totalAmount = cartItems.reduce(
-    (acc, item) => acc + item.rate * item.qty,
+    (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
     0
-  );
+  ).toFixed(2);
 
   const handleQuantityChange = (item, value) => {
     const newQty = parseInt(value, 10);
-    if (isNaN(newQty) || newQty < "") {
+    if (isNaN(newQty) || newQty <= 0) {
       updateCartItem(item.id, "");
     } else {
       updateCartItem(item.id, newQty);
@@ -65,14 +66,14 @@ export default function CartPage() {
           Your Shopping Cart
         </h2>
 
-        {/* product cart icon */}
+        {/* Product cart icon */}
         <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
           <Link to="/productCard">
-            <div className=" rounded-full">
+            <div className="rounded-full">
               <img
                 src={shopNow}
                 alt="New Product"
-                 className="w-32 h-36 object-contain"
+                className="w-32 h-36 object-contain"
               />
             </div>
           </Link>
@@ -87,7 +88,7 @@ export default function CartPage() {
         <p className="text-center mb-4">
           <Link
             to="/ProductCard"
-            className="text-blue-600 text-base sm:text-lg font-semibold hover:underline"
+            className="text-red-600 text-base sm:text-lg font-semibold hover:underline"
           >
             Products
           </Link>{" "}
@@ -111,7 +112,7 @@ export default function CartPage() {
               <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_80px] gap-2 sm:gap-4 font-semibold text-gray-700 bg-gray-100 p-3 sm:p-4 rounded-t-md">
                 <div>S.No</div>
                 <div>Product Name</div>
-                <div>Rate (₹)</div>
+                <div>Actual Price / Our Price (₹)</div>
                 <div>Quantity</div>
                 <div>Total (₹)</div>
                 <div>Actions</div>
@@ -124,20 +125,20 @@ export default function CartPage() {
                 >
                   <div>{index + 1}</div>
                   <div className="font-semibold text-gray-800">{item.name}</div>
-                  <div className="text-gray-700">₹{item.rate}</div>
+                  <div className="text-gray-700">
+                    <span className="line-through">₹{Number(item.actualPrice).toFixed(2)}</span> / ₹{Number(item.ourPrice).toFixed(2)}
+                  </div>
                   <div>
                     <input
                       type="number"
                       value={item.qty}
-                      onChange={(e) =>
-                        handleQuantityChange(item, e.target.value)
-                      }
+                      onChange={(e) => handleQuantityChange(item, e.target.value)}
                       className="w-14 sm:w-16 text-center text-gray-800 font-medium border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       min="1"
                     />
                   </div>
                   <div className="text-blue-600 font-semibold">
-                    ₹{item.rate * item.qty}
+                    ₹{(Number(item.ourPrice) * Number(item.qty)).toFixed(2)}
                   </div>
                   <div>
                     <button
@@ -170,24 +171,24 @@ export default function CartPage() {
                     </button>
                   </div>
                   <div className="flex justify-between text-gray-700 text-sm">
-                    <span>Rate:</span>
-                    <span >₹{item.rate}</span>
+                    <span>Price:</span>
+                    <span>
+                      <span className="line-through">₹{Number(item.actualPrice).toFixed(2)}</span> / ₹{Number(item.ourPrice).toFixed(2)}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-gray-700 text-sm">Quantity:</span>
                     <input
                       type="number"
                       value={item.qty}
-                      onChange={(e) =>
-                        handleQuantityChange(item, e.target.value)
-                      }
+                      onChange={(e) => handleQuantityChange(item, e.target.value)}
                       className="w-14 text-center text-gray-800 font-medium border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                       min="1"
                     />
                   </div>
                   <div className="flex justify-between text-blue-600 font-semibold mt-2">
                     <span>Total:</span>
-                    <span>₹{item.rate * item.qty}</span>
+                    <span>₹{(Number(item.ourPrice) * Number(item.qty)).toFixed(2)}</span>
                   </div>
                 </div>
               ))}

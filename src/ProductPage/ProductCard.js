@@ -29,11 +29,12 @@ export default function ProductFeaturePage() {
     return counts;
   }, []);
 
-  const totalAmount = cartItems.reduce(
-    (acc, item) => acc + item.rate * item.qty,
-    0
-  );
-
+  const totalAmount = useMemo(() => {
+    return cartItems.reduce(
+      (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
+      0
+    ).toFixed(2);
+  }, [cartItems]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -51,9 +52,9 @@ export default function ProductFeaturePage() {
       );
     }
     if (sortOrder === "asc") {
-      products.sort((a, b) => a.rate - b.rate);
+      products.sort((a, b) => (Number(a.ourPrice) || 0) - (Number(b.ourPrice) || 0));
     } else if (sortOrder === "desc") {
-      products.sort((a, b) => b.rate - a.rate);
+      products.sort((a, b) => (Number(b.ourPrice) || 0) - (Number(a.ourPrice) || 0));
     }
     return products;
   }, [selectedCategory, searchQuery, sortOrder]);
@@ -72,7 +73,7 @@ export default function ProductFeaturePage() {
 
     const qty = parseInt(value, 10);
     if (isNaN(qty) || qty <= 0) {
-      removeFromCart(product.id);  // Remove the item if quantity is invalid
+      removeFromCart(product.id); // Remove the item if quantity is invalid
       return;
     }
 
@@ -134,7 +135,7 @@ export default function ProductFeaturePage() {
             <div className="relative">
               <img src={cart} alt="Cart" className="w-8 h-8 sm:w-10 sm:h-10" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-white text-blue-600 text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-white text-black text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
                   {cartItems.length}
                 </span>
               )}
@@ -149,7 +150,7 @@ export default function ProductFeaturePage() {
         {/* Category */}
         <div className="w-full sm:w-1/4 bg-white p-4 rounded shadow-md">
           <button
-            className="sm:hidden bg-blue-600 text-white px-4 py-2 rounded w-full mb-4 flex justify-between items-center"
+            className="sm:hidden bg-red-600 text-white px-4 py-2 rounded w-full mb-4 flex justify-between items-center"
             onClick={() => setIsCategoryMenuOpen(!isCategoryMenuOpen)}
           >
             Categories
@@ -164,8 +165,8 @@ export default function ProductFeaturePage() {
                     onClick={() => handleCategoryChange(cat)}
                     className={`w-full text-left px-3 py-2 rounded-lg font-semibold transition-colors ${
                       selectedCategory === cat
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-100 text-gray-800 hover:bg-blue-500 hover:text-white"
+                        ? "bg-red-600 text-white"
+                        : "bg-gray-100 text-gray-800 hover:bg-red-500 hover:text-white"
                     }`}
                   >
                     {cat} ({categoryCounts[cat]})
@@ -184,12 +185,12 @@ export default function ProductFeaturePage() {
               placeholder="Search by name"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="p-2 border border-gray-300 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border border-gray-300 rounded shadow focus:outline-none focus:ring-2 focus:ring-red-500"
             />
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
-              className="p-2 border border-gray-300 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border border-gray-300 rounded shadow focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               <option value="default">Sort by Price</option>
               <option value="asc">Low to High</option>
@@ -204,7 +205,7 @@ export default function ProductFeaturePage() {
           >
             <div>S.No</div>
             <div>Product Name</div>
-            <div>Rate (₹)</div>
+            <div>Actual Price / Our Price (₹)</div>
             <div>Unit</div>
             <div>Quantity</div>
           </div>
@@ -222,20 +223,19 @@ export default function ProductFeaturePage() {
               >
                 <div>{index + 1}</div>
                 <div className="font-medium">{product.name}</div>
-                <div className="text-red-600">₹{product.rate}</div>
+                <div className="text-red-600">
+                  <span className="line-through">₹{Number(product.actualPrice).toFixed(2)}</span> / ₹{Number(product.ourPrice).toFixed(2)}
+                </div>
                 <div>{product.per}</div>
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
-                    value={getItemQuantity(product.id)}  // Bind value to the input
-                    onChange={(e) =>
-                      handleQuantityChange(product, e.target.value)
-                    }
-                    onBlur={() => handleInputBlur(product)}  // Handle blur to save the value
+                    value={getItemQuantity(product.id)} // Bind value to the input
+                    onChange={(e) => handleQuantityChange(product, e.target.value)}
+                    onBlur={() => handleInputBlur(product)} // Handle blur to save the value
                     className="w-20 text-center border rounded border-black"
                     min="0"
                     placeholder="Qty"
-                    
                   />
                 </div>
               </motion.div>

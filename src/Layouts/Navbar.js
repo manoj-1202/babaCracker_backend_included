@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import Logo from "../assets/logo.png";
 import NavCart from "../assets/NavCart.png";
 import { useCart } from "../Cart/CartContext";
+import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,10 +14,9 @@ function Navbar() {
   return (
     <>
       <div className="bg-red-600 text-white h-14 flex items-center overflow-hidden">
-        <div className="whitespace-nowrap animate-marquee text-xl font-semibold">
-          Baba Crackers! - Purchase Now ! - Make This
-          Diwali Grand with Baba Crackers!  - Diwali Sale - Get Ready to
-          Sparkle with Baba Crackers!
+        <div className="whitespace-nowrap animate-marquee text-xl font-semibold will-change-transform">
+          Baba Crackers! - Purchase Now ! - Make This Diwali Grand with Baba
+          Crackers! - Diwali Sale - Get Ready to Sparkle with Baba Crackers!
         </div>
       </div>
 
@@ -38,10 +38,15 @@ function Navbar() {
                 <h1 className="text-3xl font-bold text-red-700 mt-2">
                   Baba Crackers
                 </h1>
-                <div className="text-center text-blue-800 mt-2">
-                  <a href="tel:+9445280054">Contact Number: 9445280054</a>
-                  <br />
-                  <a href="tel:+9444813377">Whatsapp Number: 9444813377</a>
+                <div className="text-center text-black font-semibold mt-2">
+                  <div className="flex justify-center items-center mb-2">
+                    <FaPhoneAlt className="mr-2 text-xl" />
+                    <a href="tel:+9445280054">9445280054</a>
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <FaWhatsapp className="mr-2 text-xl" />
+                    <a href="tel:+9444813377">9444813377</a>
+                  </div>
                 </div>
               </div>
 
@@ -160,10 +165,17 @@ function Navbar() {
                   <h1 className="text-3xl font-bold text-red-700">
                     Baba Crackers
                   </h1>
-                  <div className="text-blue-800">
-                    <a href="tel:+9445280054">Contact Number: 9445280054</a>
-                    <br />
-                    <a href="tel:+9444813377">Whatsapp Number: 9444813377</a>
+                  <div className="text-black font-semibold">
+                    <div className="inline-flex items-center gap-4">
+                      <div className="flex items-center">
+                        <FaPhoneAlt className="mr-2 text-xl" />
+                        <a href="tel:+9445280054">9445280054</a>
+                      </div>
+                      <div className="flex items-center">
+                        <FaWhatsapp className="mr-2 text-xl" />
+                        <a href="https://wa.me/+9444813377">9444813377</a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

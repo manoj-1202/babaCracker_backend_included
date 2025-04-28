@@ -1,8 +1,9 @@
-import React, { useState } from "react"; // Import useState
+
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useCart } from "../Cart/CartContext"; // Make sure path is correct
-import cart from "../assets/cart.png"; // Cart image
+import { useCart } from "../Cart/CartContext";
+import cart from "../assets/cart.png";
 
 import banner from "../assets/banner.jpg";
 import MobileBanner from "../assets/MobileBanner.png";
@@ -17,7 +18,6 @@ import bijili from "../assets/main/bijili.jpeg";
 
 const Main = () => {
   const { cartItems, addToCart, removeFromCart, updateCartItem } = useCart();
-  // Initialize inputValues state
   const [inputValues, setInputValues] = useState({});
 
   const featuredProducts = [
@@ -25,69 +25,76 @@ const Main = () => {
       id: 1,
       category: "7 CM SPARKLERS",
       name: "7 cm Electric Sparklers",
-      rate: 24,
+      actualPrice: 24,
+      ourPrice: 10,
       per: "Box (10 Pcs)",
-      image: sparkler,
+      image: sparkler
     },
     {
       id: 25,
       category: "FLORAL FLOWER POTS",
       name: "Flower Pot Small",
-      rate: 130,
+      actualPrice: 130,
+      ourPrice: 70,
       per: "Box (10 Pcs)",
-      image: flowerpot,
+      image: flowerpot
     },
     {
       id: 37,
       category: "CHAKKAR PREMIUM",
       name: "Wire Chakkar",
-      rate: 320,
+      actualPrice: 350,
+      ourPrice: 140,
       per: "Box (10 Pcs)",
-      image: chakkara,
+      image: chakkara
     },
     {
       id: 44,
       category: "ONE SOUND CRACKERS",
       name: "4'' Lakshmi Super Deluxe",
-      rate: 90,
+      actualPrice: 90,
+      ourPrice: 36,
       per: "Pkt (5 Pcs)",
-      image: lakshmi,
+      image: lakshmi
     },
     {
       id: 49,
       category: "HOT BIJILI PACKS",
       name: "Red Bijili",
-      rate: 80,
+      actualPrice: 80,
+      ourPrice: 32,
       per: "Bag (100 Pcs)",
-      image: bijili,
+      image: bijili
     },
     {
       id: 64,
       category: "PAPER BOMB",
       name: "1/4 Kg Paper Bomb - Jumbo",
-      rate: 120,
+      actualPrice: 130,
+      ourPrice: 52,
       per: "Box (1 Pcs)",
-      image: paperbomb,
+      image: paperbomb
     },
     {
       id: 73,
       category: "PEACOCK DANCES",
       name: "Magical Peacock - 5 Face",
-      rate: 300,
+      actualPrice: 350,
+      ourPrice: 140,
       per: "Box (1 Pcs)",
-      image: peacock,
+      image: peacock
     },
     {
       id: 87,
       category: "COLOUR FOUNTAIN",
       name: "Ice Cream Fountain - TIN",
-      rate: 200,
+      actualPrice: 200,
+      ourPrice: 80,
       per: "Box (1 Pcs)",
-      image: skyshot,
-    },
+      image: skyshot
+    }
   ];
 
-  // Define handleInputBlur outside handleQuantityChange
   const handleInputBlur = (product) => {
     const value = inputValues[product.id] || "";
     const qty = parseInt(value, 10);
@@ -98,13 +105,11 @@ const Main = () => {
       }));
       removeFromCart(product.id);
     } else {
-      // If valid quantity, update the cart
       updateCartItem(product.id, qty);
     }
   };
 
   const handleQuantityChange = (product, value) => {
-    // Update local input value
     setInputValues((prev) => ({
       ...prev,
       [product.id]: value,
@@ -117,7 +122,7 @@ const Main = () => {
 
     const qty = parseInt(value, 10);
     if (isNaN(qty) || qty <= 0) {
-      removeFromCart(product.id); // Remove the item if quantity is invalid
+      removeFromCart(product.id);
       return;
     }
 
@@ -130,7 +135,6 @@ const Main = () => {
   };
 
   const getItemQuantity = (id) => {
-    // Prioritize inputValues for real-time input
     if (inputValues[id] !== undefined) {
       return inputValues[id];
     }
@@ -139,9 +143,9 @@ const Main = () => {
   };
 
   const totalAmount = cartItems.reduce(
-    (acc, item) => acc + item.rate * item.qty,
+    (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
     0
-  );
+  ).toFixed(2);
 
   return (
     <section className="relative max-w-7xl mx-auto font-poppins overflow-hidden">
@@ -206,7 +210,7 @@ const Main = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="border rounded-lg p-4 shadow hover:shadow-md transition duration-300 flex flex-col justify-between"
+              className="border rounded-lg  border-red-500 p-4 shadow hover:shadow-md transition duration-300 flex flex-col justify-between"
             >
               <div>
                 <img
@@ -223,14 +227,12 @@ const Main = () => {
 
               <div className="mt-4 flex items-center justify-between gap-2">
                 <p className="text-lg font-bold text-red-600">
-                  ₹{product.rate}
+                  <span className="line-through">₹{Number(product.actualPrice).toFixed(2)}</span> / ₹{Number(product.ourPrice).toFixed(2)}
                 </p>
                 <input
                   type="number"
                   value={getItemQuantity(product.id)}
-                  onChange={(e) =>
-                    handleQuantityChange(product, e.target.value)
-                  }
+                  onChange={(e) => handleQuantityChange(product, e.target.value)}
                   onBlur={() => handleInputBlur(product)}
                   className="w-16 text-center border rounded border-black"
                   min="0"

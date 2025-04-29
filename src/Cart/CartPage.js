@@ -45,7 +45,7 @@ export default function CartPage() {
   const handlePlaceOrder = async () => {
     setIsPlacingOrder(true);
     try {
-      await axios.post("http://localhost:5000/place-order", {
+      await axios.post("https://crackers-1wy7.onrender.com/place-order", {
         email,
         mobile,
         cartItems,

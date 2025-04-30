@@ -1,6 +1,6 @@
 import React from "react";
 import Main from "../MainPage/Main";
-import MoveImage from "./MoveImage";
+// import MoveImage from "./MoveImage";
 import ContactPage from "./Contact";
 import OurService from "./OurService";
 import Success from "./Success";
@@ -51,7 +51,7 @@ const Home = () => {
       </div>
 
       <Main />
-      <MoveImage />
+      {/* <MoveImage /> */}
       <Success />
       <OurService />
       <Testimonial />

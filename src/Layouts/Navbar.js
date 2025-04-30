@@ -13,12 +13,12 @@ function Navbar() {
 
   return (
     <>
-      {/* <div className="bg-red-600 text-white h-14 flex items-center overflow-hidden">
+      <div className="bg-red-600 text-white h-14 flex items-center overflow-hidden">
         <div className="whitespace-nowrap animate-marquee text-xl font-semibold will-change-transform">
           Baba Crackers! - Purchase Now ! - Make This Diwali Grand with Baba
           Crackers! - Diwali Sale - Get Ready to Sparkle with Baba Crackers!
         </div>
-      </div> */}
+      </div>
 
       {/* Navbar */}
       <nav className=" bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400  text-black">

@@ -110,12 +110,12 @@ const Success = () => {
             className="rounded-xl overflow-hidden shadow-lg bg-white text-left"
           >
             <img
-              src={godo}
+                src={store} 
               alt="Storage Facility"
               className="w-full h-56 object-cover"
             />
             <div className="p-4 text-gray-800">
-              <h3 className="text-lg font-semibold mb-2">Our Storage Facility</h3>
+              <h3 className="text-lg font-semibold mb-2">Our Showroom 1</h3>
               <p className="text-sm text-gray-700">
                 We own one of the largest storage facilities in Sivakasi, with a
                 capacity of more than 10,00,000 Kgs of fireworks.
@@ -132,12 +132,12 @@ const Success = () => {
             className="rounded-xl overflow-hidden shadow-lg bg-white text-left"
           >
             <img
-              src={trans}
+               src={store} 
               alt="Transport Fleets"
               className="w-full h-56 object-cover"
             />
             <div className="p-4 text-gray-800">
-              <h3 className="text-lg font-semibold mb-2">Our Transport Fleets</h3>
+              <h3 className="text-lg font-semibold mb-2">Our Showroom 2</h3>
               <p className="text-sm text-gray-700">
                 We have our own and partnered fleets transporting crackers all
                 over India.
@@ -159,7 +159,7 @@ const Success = () => {
               className="w-full h-56 object-cover"
             />
             <div className="p-4 text-gray-800">
-              <h3 className="text-lg font-semibold mb-2">Our Showroom</h3>
+              <h3 className="text-lg font-semibold mb-2">Our Showroom 3</h3>
               <p className="text-sm text-gray-700">
                 You can directly buy from our Showroom in Sivakasi (2 more coming soon).
               </p>

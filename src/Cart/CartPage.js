@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useCart } from "./CartContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,9 +7,8 @@ import shopNow from "../assets/shopNow.png";
 import phonecall from "../assets/phone-call.png";
 import whatsapp from "../assets/whatsapp.png";
 
-
 export default function CartPage() {
-  const { cartItems, removeFromCart, updateCartItem, totalItems } = useCart();
+  const { cartItems, removeFromCart, updateCartItem, totalItems, clearCart } = useCart();
   const [lastRemoved, setLastRemoved] = useState(null);
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -51,6 +49,7 @@ export default function CartPage() {
         cartItems,
         totalAmount,
       });
+      clearCart();
       navigate("/thank-you");
     } catch (error) {
       setOrderStatus({ success: false, message: "Failed to place order." });
@@ -82,28 +81,28 @@ export default function CartPage() {
           </Link>
         </div>
 
-           {/* WhatsApp and Call Buttons */}
-      <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
-        <a href="tel:+9445280054" className="rounded-full animate-pulse">
-          <img
-            src={phonecall}
-            alt="Call Now"
-            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-          />
-        </a>
-        <a
-          href="https://api.whatsapp.com/send?phone=9444813377"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full animate-pulse"
-        >
-          <img
-            src={whatsapp}
-            alt="WhatsApp"
-            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
-          />
-        </a>
-      </div>
+        {/* WhatsApp and Call Buttons */}
+        <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
+          <a href="tel:+9445280054" className="rounded-full animate-pulse">
+            <img
+              src={phonecall}
+              alt="Call Now"
+              className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+            />
+          </a>
+          <a
+            href="https://api.whatsapp.com/send?phone=9444813377"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full animate-pulse"
+          >
+            <img
+              src={whatsapp}
+              alt="WhatsApp"
+              className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+            />
+          </a>
+        </div>
 
         {lastRemoved && (
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-xs sm:text-sm px-2 py-1 rounded shadow z-10 animate-pulse">

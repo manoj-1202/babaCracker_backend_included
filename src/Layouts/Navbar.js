@@ -13,12 +13,12 @@ function Navbar() {
 
   return (
     <>
-      <div className="bg-red-600 text-white h-14 flex items-center overflow-hidden">
+      {/* <div className="bg-red-600 text-white h-14 flex items-center overflow-hidden">
         <div className="whitespace-nowrap animate-marquee text-xl font-semibold will-change-transform">
           Baba Crackers! - Purchase Now ! - Make This Diwali Grand with Baba
           Crackers! - Diwali Sale - Get Ready to Sparkle with Baba Crackers!
         </div>
-      </div>
+      </div> */}
 
       {/* Navbar */}
       <nav className=" bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400  text-black">
@@ -32,7 +32,7 @@ function Navbar() {
                   <img
                     src={Logo}
                     alt="Logo"
-                    className="h-16 object-contain transition-transform duration-300 hover:scale-105"
+                    className="h-24 object-contain transition-transform duration-300 hover:scale-105"
                   />
                 </Link>
                 <h1 className="text-3xl font-bold text-red-700 mt-2">
@@ -90,7 +90,7 @@ function Navbar() {
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-4 border-b bg-white/40 backdrop-blur-md">
                 <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
-                  <img src={Logo} alt="Logo" className="h-16 object-contain" />
+                  <img src={Logo} alt="Logo" className="h-20 object-contain" />
                 </Link>
                 <h1 className="text-red-700 font-bold text-xl">
                   Baba Crackers

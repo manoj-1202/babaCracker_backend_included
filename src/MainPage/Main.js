@@ -15,6 +15,10 @@ import peacock from "../assets/main/PEACOCK.jpg";
 import skyshot from "../assets/main/skyshot.jpg";
 import lakshmi from "../assets/main/lakshmi.jpg";
 import bijili from "../assets/main/bijili.jpeg";
+// import CracklingSparklers from "../assets/main/15CM Crackling Sparklers.jpg";
+// import RedSparklers from "../assets/main/15CM Red Sparklers.jpg";
+// import CracklingSparklers2 from "../assets/main/30CM Crackling Sparklers.jpg";
+// import Crackling from "../assets/main/7CM Crackling Sparklers.jpg";
 
 const Main = () => {
   const { cartItems, addToCart, removeFromCart, updateCartItem } = useCart();
@@ -92,7 +96,50 @@ const Main = () => {
       ourPrice: 80,
       per: "Box (1 Pcs)",
       image: skyshot
-    }
+    },
+    
+
+
+    // New
+    // {
+    //   id: 2,
+    //   category: "7CM SPARKLERS",
+    //   name: "7CM Crackling Sparklers",
+    //   actualPrice: 32,
+    //   ourPrice: 13,
+    //   per: "Box (10 Pcs)",
+    //   image: Crackling,
+    // },
+
+    // {
+    //   id: 10,
+    //   category: "15CM SPARKLERS",
+    //   name: "15CM Crackling Sparklers",
+    //   actualPrice: 120,
+    //   ourPrice: 48,
+    //   per: "Box (10 Pcs)",
+    //   image: CracklingSparklers
+    // },
+
+    // {
+    //   id: 12,
+    //   category: "15CM SPARKLERS",
+    //   name: "15CM Red Sparklers",
+    //   actualPrice: 155,
+    //   ourPrice: 62,
+    //   per: "Box (10 Pcs)",
+    //   image: RedSparklers
+
+    // },
+    // {
+    //   id: 14,
+    //   category: "30CM SPARKLERS",
+    //   name: "30CM Crackling Sparklers",
+    //   actualPrice: 120,
+    //   ourPrice: 48,
+    //   per: "Box (5 Pcs)",
+    //   image: CracklingSparklers2
+    // },
   ];
 
   const handleInputBlur = (product) => {

@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import React, { useEffect } from "react";
 
 export default function ThankYouPage() {
+  const { state } = useLocation();
+
+  const { orderNumber } = state || {};
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -12,6 +15,8 @@ export default function ThankYouPage() {
       <h1 className="text-3xl sm:text-4xl font-bold text-green-600 mb-4">
         🎉 Thank You for Your Order!
       </h1>
+      <p className="font-medium">Order Number: {orderNumber || "N/A"}</p>
+   
       <p className="text-lg text-gray-700 mb-6 text-center max-w-xl">
         We appreciate your purchase. Our team will contact you shortly for confirmation and delivery.
       </p>

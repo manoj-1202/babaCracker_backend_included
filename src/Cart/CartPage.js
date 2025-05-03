@@ -12,6 +12,8 @@ export default function CartPage() {
   const [lastRemoved, setLastRemoved] = useState(null);
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderStatus, setOrderStatus] = useState(null);
   const navigate = useNavigate();
@@ -24,6 +26,8 @@ export default function CartPage() {
     (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
     0
   ).toFixed(2);
+
+  const MINIMUM_ORDER_AMOUNT = 3000;
 
   const handleQuantityChange = (item, value) => {
     const newQty = parseInt(value, 10);
@@ -41,16 +45,40 @@ export default function CartPage() {
   };
 
   const handlePlaceOrder = async () => {
+    if (Number(totalAmount) < MINIMUM_ORDER_AMOUNT) {
+      setOrderStatus({
+        success: false,
+        message: `Minimum order amount is ₹${MINIMUM_ORDER_AMOUNT}. Please add more items to your cart.`,
+      });
+      return;
+    }
+
     setIsPlacingOrder(true);
     try {
-      await axios.post("https://crackers-1wy7.onrender.com/place-order", {
+      // Generate order date in the same format as the backend
+      const orderDate = new Date().toLocaleString("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+
+      const response = await axios.post("http://localhost:5000/place-order", {
+        name,
         email,
         mobile,
+        address,
         cartItems,
         totalAmount,
+        orderDate, 
       });
       clearCart();
-      navigate("/thank-you");
+      navigate("/thank-you", {
+        state: {
+          orderNumber: response.data.orderNumber,
+          name: response.data.name,           
+          totalAmount: response.data.totalAmount 
+        }
+      });
+      
     } catch (error) {
       setOrderStatus({ success: false, message: "Failed to place order." });
       console.error("Order error:", error);
@@ -59,10 +87,10 @@ export default function CartPage() {
     }
   };
 
-  const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile;
+  const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile || !name || !address;
 
   return (
-    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen ">
+    <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
       <div className="max-w-5xl mx-auto relative">
         <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-center">
           Your Shopping Cart
@@ -234,8 +262,16 @@ export default function CartPage() {
 
               <div className="flex flex-col gap-2">
                 <input
+                  type="text"
+                  placeholder="Enter your Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="p-2 border rounded shadow bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  required
+                />
+                <input
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Enter your Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="p-2 border rounded shadow bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
@@ -245,7 +281,7 @@ export default function CartPage() {
                 />
                 <input
                   type="tel"
-                  placeholder="Enter your mobile number"
+                  placeholder="Enter your Mobile number"
                   value={mobile}
                   onChange={(e) =>
                     setMobile(e.target.value.replace(/[^0-9]/g, ""))
@@ -254,6 +290,14 @@ export default function CartPage() {
                   pattern="[0-9]{10}"
                   maxLength="10"
                   title="Please enter a 10-digit mobile number"
+                  required
+                />
+                <textarea
+                  placeholder="Enter your Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="p-2 border rounded shadow bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                  rows="4"
                   required
                 />
               </div>

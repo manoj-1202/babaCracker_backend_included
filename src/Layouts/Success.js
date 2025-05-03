@@ -4,8 +4,7 @@ import retail from "../assets/retail.png";
 import godown from "../assets/godown.png";
 import transport from "../assets/transport.png";
 import store from "../assets/store.jpg";
-import trans from "../assets/trans.jpg";
-import godo from "../assets/godo.jpg";
+
 
 
 const Success = () => {

@@ -61,7 +61,7 @@ export default function CartPage() {
         timeStyle: "short",
       });
 
-      const response = await axios.post("http://localhost:5000/place-order", {
+      const response = await axios.post("https://crackers-1wy7.onrender.com/place-order", {
         name,
         email,
         mobile,

@@ -33,7 +33,7 @@ app.post("/place-order", async (req, res) => {
     });
 
     // Generate order number and date
-    const orderNumber = `ORD-${Date.now()}`; // Simple timestamp-based order number
+   
     const orderDate = new Date().toLocaleString("en-IN", {
       dateStyle: "medium",
       timeStyle: "short",
@@ -54,7 +54,7 @@ app.post("/place-order", async (req, res) => {
 
     const htmlContent = `
       <h2>New Order Placed</h2>
-      <p><strong>Order Number:</strong> ${orderNumber}</p>
+     
       <p><strong>Order Date:</strong> ${orderDate}</p>
       <p><strong>Name:</strong> ${name}</p>
       <p><strong>Email:</strong> ${email}</p>

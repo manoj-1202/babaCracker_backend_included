@@ -207,7 +207,6 @@ function Navbar() {
                   Contact Us
                 </Link>
 
-
                 <Link
                   to="/downloadCart"
                   className="text-white bg-red-600 px-4 py-2 rounded-3xl hover:bg-red-700 transition-colors"
@@ -229,6 +228,9 @@ function Navbar() {
                     )}
                   </div>
                 </Link>
+                <div className="bg-red-600 rounded-2xl text-white">
+                  <Link to="/admin/login">A</Link>
+                </div>
               </div>
             </div>
           </div>

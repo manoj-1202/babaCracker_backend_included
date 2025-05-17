@@ -8,10 +8,14 @@ import Testimonial from "./Testimonial";
 import shopNow from "../assets/shopNow.png";
 import phonecall from "../assets/phone-call.png";
 import whatsapp from "../assets/whatsapp.png";
-
 import { Link } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
 
 const Home = () => {
+ 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   return (
     <div>
       {/* product cart icon */}
@@ -26,6 +30,17 @@ const Home = () => {
           </div>
         </Link>
       </div>
+
+      {/* scrool top */}
+       <div className="fixed bottom-5 right-10 z-50">
+      <button
+        onClick={handleScrollTop}
+        className="bg-white shadow-lg rounded-full p-3 hover:bg-gray-200 "
+        aria-label="Scroll to top"
+      >
+        <FaArrowUp className="text-lg text-gray-700" />
+      </button>
+    </div>
 
       {/* WhatsApp and Call Buttons */}
       <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">

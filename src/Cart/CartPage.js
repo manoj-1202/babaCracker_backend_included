@@ -6,6 +6,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import shopNow from "../assets/shopNow.png";
 import phonecall from "../assets/phone-call.png";
 import whatsapp from "../assets/whatsapp.png";
+import { FaArrowUp } from "react-icons/fa";
 
 export default function CartPage() {
   const { cartItems, removeFromCart, updateCartItem, totalItems, clearCart } = useCart();
@@ -22,10 +23,16 @@ export default function CartPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  const totalAmount = cartItems.reduce(
-    (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
-    0
-  ).toFixed(2);
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const totalAmount = cartItems
+    .reduce(
+      (acc, item) => acc + (Number(item.ourPrice) || 0) * (Number(item.qty) || 0),
+      0
+    )
+    .toFixed(2);
 
   const MINIMUM_ORDER_AMOUNT = 3000;
 
@@ -44,6 +51,16 @@ export default function CartPage() {
     setTimeout(() => setLastRemoved(null), 2000);
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
   const handlePlaceOrder = async () => {
     if (Number(totalAmount) < MINIMUM_ORDER_AMOUNT) {
       setOrderStatus({
@@ -53,41 +70,129 @@ export default function CartPage() {
       return;
     }
 
+    // Validate inputs
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      setOrderStatus({ success: false, message: "Please enter a valid email address" });
+      return;
+    }
+    if (!/^[0-9]{10}$/.test(mobile)) {
+      setOrderStatus({
+        success: false,
+        message: "Please enter a valid 10-digit mobile number",
+      });
+      return;
+    }
+    if (cartItems.some((item) => !item.id || typeof item.id !== "string")) {
+      setOrderStatus({
+        success: false,
+        message: "Invalid product ID in cart. Please remove invalid items and try again.",
+      });
+      return;
+    }
+
     setIsPlacingOrder(true);
+
     try {
-      // Generate order date in the same format as the backend
+      // Load Razorpay SDK
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        setOrderStatus({ success: false, message: "Failed to load payment gateway. Please try again." });
+        setIsPlacingOrder(false);
+        return;
+      }
+
+      // Create order in backend to get Razorpay order ID
       const orderDate = new Date().toLocaleString("en-IN", {
         dateStyle: "medium",
         timeStyle: "short",
       });
 
-      const response = await axios.post("https://crackers-1wy7.onrender.com/place-order", {
+      const orderPayload = {
         name,
         email,
         mobile,
         address,
-        cartItems,
+        cartItems: cartItems.map((item) => ({
+          productId: item.id,
+          name: item.name,
+          qty: item.qty,
+          actualPrice: item.actualPrice,
+          ourPrice: item.ourPrice,
+          per: item.per,
+        })),
         totalAmount,
-        orderDate, 
-      });
-      clearCart();
-      navigate("/thank-you", {
-        state: {
-          orderNumber: response.data.orderNumber,
-          name: response.data.name,           
-          totalAmount: response.data.totalAmount 
-        }
-      });
-      
+        orderDate,
+      };
+
+      const orderResponse = await axios.post(
+        "http://localhost:5001/api/orders/create-payment-order",
+        { amount: Number(totalAmount) * 100 } // Razorpay expects amount in paise
+      );
+
+      const { razorpayOrderId, keyId } = orderResponse.data;
+
+      // Initialize Razorpay checkout
+      const options = {
+        key: keyId,
+        amount: Number(totalAmount) * 100,
+        currency: "INR",
+        name: "BabaCrackers",
+        description: "Order Payment",
+        order_id: razorpayOrderId,
+        handler: async function (response) {
+          try {
+            // Verify payment and save order
+            const paymentResponse = await axios.post(
+              "http://localhost:5001/api/orders/place-order",
+              {
+                ...orderPayload,
+                paymentDetails: {
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_signature: response.razorpay_signature,
+                },
+              }
+            );
+
+            clearCart();
+            setOrderStatus({ success: true, message: "Order placed successfully!" });
+            navigate("/thank-you", {
+              state: {
+                name: paymentResponse.data.name,
+                totalAmount: paymentResponse.data.totalAmount,
+              },
+            });
+          } catch (error) {
+            setOrderStatus({
+              success: false,
+              message: error.response?.data?.message || "Payment verification failed.",
+            });
+          }
+        },
+        prefill: {
+          name,
+          email,
+          contact: mobile,
+        },
+        theme: {
+          color: "#2563eb",
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
-      setOrderStatus({ success: false, message: "Failed to place order." });
-      console.error("Order error:", error);
+      setOrderStatus({
+        success: false,
+        message: error.response?.data?.message || "Failed to initiate payment.",
+      });
     } finally {
       setIsPlacingOrder(false);
     }
   };
 
-  const isPlaceOrderDisabled = cartItems.length === 0 || !email || !mobile || !name || !address;
+  const isPlaceOrderDisabled =
+    cartItems.length === 0 || !email || !mobile || !name || !address;
 
   return (
     <div className="px-4 py-6 sm:py-8 sm:px-6 lg:px-8 bg-gray-50 min-h-screen">
@@ -96,9 +201,8 @@ export default function CartPage() {
           Your Shopping Cart
         </h2>
 
-        {/* Product cart icon */}
         <div className="fixed bottom-10 inset-x-0 z-50 sm:bottom-8 flex justify-end pr-4 sm:pr-6">
-          <Link to="/productCard">
+          <Link to="/ProductCard">
             <div className="rounded-full">
               <img
                 src={shopNow}
@@ -109,7 +213,6 @@ export default function CartPage() {
           </Link>
         </div>
 
-        {/* WhatsApp and Call Buttons */}
         <div className="fixed top-1/2 left-3 transform -translate-y-1/2 z-50 flex flex-col gap-8">
           <a href="tel:+9445280054" className="rounded-full animate-pulse">
             <img
@@ -130,6 +233,16 @@ export default function CartPage() {
               className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
             />
           </a>
+        </div>
+
+        <div className="fixed bottom-5 right-14 z-50">
+          <button
+            onClick={handleScrollTop}
+            className="bg-white shadow-lg rounded-full p-3 hover:bg-gray-200 "
+            aria-label="Scroll to top"
+          >
+            <FaArrowUp className="text-lg text-gray-700" />
+          </button>
         </div>
 
         {lastRemoved && (
@@ -160,7 +273,6 @@ export default function CartPage() {
           </p>
         ) : (
           <>
-            {/* Table for medium and larger screens */}
             <div className="hidden sm:block w-full mt-5">
               <div className="grid grid-cols-[40px_2fr_1fr_1fr_1fr_80px] gap-2 sm:gap-4 font-semibold text-gray-700 bg-gray-100 p-3 sm:p-4 rounded-t-md">
                 <div>S.No</div>
@@ -179,7 +291,10 @@ export default function CartPage() {
                   <div>{index + 1}</div>
                   <div className="font-semibold text-gray-800">{item.name}</div>
                   <div className="text-gray-700">
-                    <span className="line-through">₹{Number(item.actualPrice).toFixed(2)}</span> / ₹{Number(item.ourPrice).toFixed(2)}
+                    <span className="line-through">
+                      ₹{Number(item.actualPrice).toFixed(2)}
+                    </span>{" "}
+                    / ₹{Number(item.ourPrice).toFixed(2)}
                   </div>
                   <div>
                     <input
@@ -205,7 +320,6 @@ export default function CartPage() {
               ))}
             </div>
 
-            {/* Card layout for small screens */}
             <div className="sm:hidden mt-5 space-y-4">
               {cartItems.map((item, index) => (
                 <div
@@ -226,7 +340,10 @@ export default function CartPage() {
                   <div className="flex justify-between text-gray-700 text-sm">
                     <span>Price:</span>
                     <span>
-                      <span className="line-through">₹{Number(item.actualPrice).toFixed(2)}</span> / ₹{Number(item.ourPrice).toFixed(2)}
+                      <span className="line-through">
+                        ₹{Number(item.actualPrice).toFixed(2)}
+                      </span>{" "}
+                      / ₹{Number(item.ourPrice).toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mt-2">
@@ -241,13 +358,14 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between text-blue-600 font-semibold mt-2">
                     <span>Total:</span>
-                    <span>₹{(Number(item.ourPrice) * Number(item.qty)).toFixed(2)}</span>
+                    <span>
+                      ₹{(Number(item.ourPrice) * Number(item.qty)).toFixed(2)}
+                    </span>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Summary Section */}
             <div className="mt-6 sm:mt-10 border-t pt-4 sm:pt-6 flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="text-base sm:text-lg font-bold">
@@ -311,7 +429,7 @@ export default function CartPage() {
                     : "bg-blue-600 hover:bg-blue-700 text-white"
                 }`}
               >
-                {isPlacingOrder ? "Placing..." : "Place Order"}
+                {isPlacingOrder ? "Processing..." : "Proceed to Payment"}
               </button>
             </div>
 
@@ -322,6 +440,14 @@ export default function CartPage() {
                 }`}
               >
                 {orderStatus.message}
+                {!orderStatus.success && (
+                  <button
+                    onClick={handlePlaceOrder}
+                    className="ml-4 text-blue-600 underline hover:text-blue-700"
+                  >
+                    Retry
+                  </button>
+                )}
               </div>
             )}
           </>

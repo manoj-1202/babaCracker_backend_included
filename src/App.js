@@ -14,11 +14,12 @@ import Success from "./Layouts/Success";
 import Testimonial from "./Layouts/Testimonial";
 import DownloadCard from "./ProductPage/DownloadCard";
 import { CartProvider } from "./Cart/CartContext";
-
+import AdminDashboard from "./Dashboards/AdminDashboard";
+import AdminLogin from "./Dashboards/AdminLogin";
 
 function App() {
   return (
-    <div className="min-h-screen  font-poppins overflow-x-hidden ">
+    <div className="min-h-screen font-poppins overflow-x-hidden">
       <BrowserRouter>
         <CartProvider>
           <Navbar />
@@ -36,6 +37,8 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/downloadCart" element={<DownloadCard />} />
               <Route path="/thank-you" element={<ThankYouPage />} />
+              <Route path="/adminDashboard" element={<AdminDashboard />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
             </Routes>
           </div>
           <Footer />

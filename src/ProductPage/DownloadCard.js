@@ -3,6 +3,7 @@ import shopNow from "../assets/shopNow.png";
 import phonecall from "../assets/phone-call.png";
 import whatsapp from "../assets/whatsapp.png";
 import { Link } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
 import page1 from "../assets/products/page1.jpg";
 import page2 from "../assets/products/page2.jpg";
 import page3 from "../assets/products/page3.jpg";
@@ -33,6 +34,10 @@ const DownloadCard = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+   const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen  bg-gray-100 py-10 px-4">
@@ -71,6 +76,17 @@ const DownloadCard = () => {
           />
         </a>
       </div>
+
+       {/* scrool top */}
+                     <div className="fixed bottom-5 right-14 z-50">
+                    <button
+                      onClick={handleScrollTop}
+                      className="bg-white shadow-lg rounded-full p-3 hover:bg-gray-200 "
+                      aria-label="Scroll to top"
+                    >
+                      <FaArrowUp className="text-lg text-gray-700" />
+                    </button>
+                  </div>
 
       <h2 className="text-3xl font-bold text-center mb-4">
         OUR PRODUCTS CATALOG

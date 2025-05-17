@@ -1,36 +1,91 @@
-
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { productData } from "./ProductData";
 import { useCart } from "../Cart/CartContext";
 import { Link } from "react-router-dom";
 import cart from "../assets/cart.png";
 import phonecall from "../assets/phone-call.png";
 import whatsapp from "../assets/whatsapp.png";
-
-const categories = ["All", ...new Set(productData.map((p) => p.category))];
+import { FaArrowUp } from "react-icons/fa";
 
 export default function ProductFeaturePage() {
+  const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
-  const [inputValues, setInputValues] = useState({}); // Store input values
+  const [inputValues, setInputValues] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const { cartItems, addToCart, removeFromCart, updateCartItem } = useCart();
 
   const productGridRef = useRef(null);
 
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("http://localhost:5001/api/products", {
+          headers: {
+            'Accept': 'application/json',
+          },
+        });
+
+        // Log response for debugging
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers.get('content-type'));
+
+        if (!response.ok) {
+          const text = await response.text();
+          console.error('Response body:', text);
+          throw new Error(`HTTP error ${response.status}: ${text.slice(0, 100)}...`);
+        }
+
+        if (!response.headers.get('content-type')?.includes('application/json')) {
+          const text = await response.text();
+          console.error('Non-JSON response:', text);
+          throw new Error('Server returned non-JSON response');
+        }
+
+        const data = await response.json();
+        // Map _id to id for compatibility
+        const formattedProducts = data.map(product => ({
+          id: product._id,
+          category: product.category,
+          name: product.name,
+          actualPrice: product.actualPrice,
+          ourPrice: product.ourPrice,
+          per: product.per
+        }));
+        setProducts(formattedProducts);
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setError(`Failed to load products: ${err.message}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Compute categories dynamically
+  const categories = useMemo(() => {
+    return ["All", ...new Set(products.map((p) => p.category))];
+  }, [products]);
+
+  // Compute category counts
   const categoryCounts = useMemo(() => {
-    const counts = productData.reduce(
+    const counts = products.reduce(
       (acc, product) => {
         acc[product.category] = (acc[product.category] || 0) + 1;
         return acc;
       },
-      { All: productData.length }
+      { All: products.length }
     );
     return counts;
-  }, []);
+  }, [products]);
 
   const totalAmount = useMemo(() => {
     return cartItems
@@ -46,23 +101,23 @@ export default function ProductFeaturePage() {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    let products = [...productData];
+    let filtered = [...products];
     if (selectedCategory !== "All") {
-      products = products.filter((p) => p.category === selectedCategory);
+      filtered = filtered.filter((p) => p.category === selectedCategory);
     }
     if (searchQuery) {
       const query = searchQuery.toLowerCase().replace(/\s+/g, "");
-      products = products.filter((p) =>
+      filtered = filtered.filter((p) =>
         p.name.toLowerCase().replace(/\s+/g, "").includes(query)
       );
     }
     if (sortOrder === "asc") {
-      products.sort((a, b) => (Number(a.ourPrice) || 0) - (Number(b.ourPrice) || 0));
+      filtered.sort((a, b) => (Number(a.ourPrice) || 0) - (Number(b.ourPrice) || 0));
     } else if (sortOrder === "desc") {
-      products.sort((a, b) => (Number(b.ourPrice) || 0) - (Number(a.ourPrice) || 0));
+      filtered.sort((a, b) => (Number(b.ourPrice) || 0) - (Number(a.ourPrice) || 0));
     }
-    return products;
-  }, [selectedCategory, searchQuery, sortOrder]);
+    return filtered;
+  }, [products, selectedCategory, searchQuery, sortOrder]);
 
   // Group products by category when "All" is selected
   const groupedProducts = useMemo(() => {
@@ -136,6 +191,22 @@ export default function ProductFeaturePage() {
     }, 100);
   };
 
+  if (isLoading) {
+    return <div className="p-4 text-center">Loading products...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 text-center text-red-600">
+        {error}
+        <p>Please check if the backend server is running and the API endpoint is correct.</p>
+      </div>
+    );
+  }
+   const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="p-4 sm:p-10 min-h-screen bg-gray-50">
       {/* WhatsApp and Call Buttons */}
@@ -160,6 +231,17 @@ export default function ProductFeaturePage() {
           />
         </a>
       </div>
+
+        {/* scrool top */}
+       <div className="fixed bottom-20 right-10 z-50">
+      <button
+        onClick={handleScrollTop}
+        className="bg-white shadow-lg rounded-full p-3 hover:bg-gray-200 "
+        aria-label="Scroll to top"
+      >
+        <FaArrowUp className="text-lg text-gray-700" />
+      </button>
+    </div>
 
       {/* Main Catalog Title */}
       <div className="pb-6 text-center">
@@ -216,7 +298,7 @@ export default function ProductFeaturePage() {
                         : "bg-gray-100 text-gray-800 hover:bg-red-500 hover:text-white"
                     }`}
                   >
-                    {cat} ({categoryCounts[cat]})
+                    {cat} ({categoryCounts[cat] || 0})
                   </button>
                 </li>
               ))}

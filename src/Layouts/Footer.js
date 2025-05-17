@@ -121,6 +121,7 @@ const Footer = () => {
             </button>
           </div>
         </div>
+        
       </div>
 
       {/* Bottom Line */}
